@@ -56,5 +56,23 @@ namespace CherryTomato
             MovieSearchResults results = Parser.ParseMovieSearchResults(response);
             return results;
         }
+
+        /// <summary>
+        /// Returns a Movie collection when provided with a set of ID numbers.
+        /// </summary>
+        /// <param name="movieIds">A collection of ints which represent RottenTomatoes ID numbers.</param>
+        /// <returns>A collection of Movie objects.</returns>
+        public List<Movie> FindMovieCollection(IEnumerable<int> movieIds)
+        {
+         
+            List<Movie> movies = new List<Movie>();
+
+            foreach (var id in movieIds)
+            {
+                movies.Add(FindMovieById(id));
+            }
+
+            return movies;
+        }
     }
 }
