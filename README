@@ -1,3 +1,5 @@
+*This is still very Alpha software. Exposed API and method calls are subject to change for now.*
+
 CherryTomato makes using information provided by RottenTomatoes.com very simple. It's aim is to allow developers to quickly and safely create powerful applications with the JSON api provided for free by RottenTomatoes.
 
 Full C# POCO objects allow you to concentrate on creating a great application and not parsing random JSON from a source.
@@ -29,4 +31,6 @@ Here's an example of how to search for a movie, via it's given numerical ID:
     }
 
     Console.ReadKey();
+
+
 
