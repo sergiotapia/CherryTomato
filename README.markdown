@@ -1,6 +1,8 @@
 CherryTomato - RottenTomatoes in the .NET Flavor
 =================================================================================================
 
+![.NET | CherryTomato](http://i.imgur.com/n1wKY.png ".NET | CherryTomato")
+
 
 CherryTomato makes using information provided by RottenTomatoes.com very simple. It's aim is to allow developers to quickly and safely create powerful applications with the JSON api provided for free by RottenTomatoes.
 
