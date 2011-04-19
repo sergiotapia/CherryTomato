@@ -29,7 +29,7 @@ Standing On The Shoulders of Giants
 ------------------
 CherryTomato is proudly powered by the phenomenal library JSON.Net provided for free by James Newton.
 
-http://james.newtonking.com/pages/json-net.aspx
+[http://james.newtonking.com/pages/json-net.aspx](http://james.newtonking.com/pages/json-net.aspx "NewtonKing")
 
 DISCLAIMER
 ------------------
