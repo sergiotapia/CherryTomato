@@ -42,7 +42,7 @@ namespace CherryTomato
         /// <param name="pageLimit">Amount of result pages to load</param>
         /// <param name="startingPage">Which page to start on</param>
         /// <returns></returns>
-        public MovieSearchResults FindMovieByQuery(string query, int pageLimit, int startingPage)
+        public MovieSearchResults FindMovieByQuery(string query, int pageLimit=10, int startingPage=0)
         {
             var url = String.Format(@"http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey={0}&q={1}&page_limit={2}&page={3}",ApiKey, query, pageLimit, startingPage);
 

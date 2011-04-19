@@ -11,7 +11,7 @@ namespace CherryTomato.Entities
         public string Title { get; set; }
         public int Year { get; set; }
         public string MpaaRating { get; set; }
-        public int Runtime { get; set; }
+        public int? Runtime { get; set; }
         public string Synopsis { get; set; }
         public List<ReleaseDate> ReleaseDates { get; set; }
         public List<Rating> Ratings { get; set; }
