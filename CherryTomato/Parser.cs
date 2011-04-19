@@ -26,7 +26,7 @@ namespace CherryTomato
             movie.MpaaRating = (string)jToken["mpaa_rating"];
 
             // jToken["runtime"] is occasionally null or has the value of "" in the JSON string.
-            // Here we remove and double quotes and if the string is not empty we convert 
+            // Here we remove any double quotes and if the string is not empty we convert 
             // it to an int and set the value of movie.Runtime.
             // If jToken["runtime"] has no value then movie.Runtime will be null
             string runtime = jToken["runtime"].ToString().Replace("\"", "");
@@ -135,13 +135,17 @@ namespace CherryTomato
             JObject jObject = JObject.Parse(json);
             MovieSearchResults results = new MovieSearchResults();
 
-            results.ResultCount = (int)jObject["total"];
+            if (jObject["total"] != null)
+                results.ResultCount = (int)jObject["total"];
 
             var movies = (JArray) jObject["movies"];
-            foreach (var movie in movies)
+            if (movies != null)
             {
-                Movie result = ParseMovie(movie.ToString());
-                results.Results.Add(result);
+                foreach (var movie in movies)
+                {
+                    Movie result = ParseMovie(movie.ToString());
+                    results.Results.Add(result);
+                }
             }
 
             return results;
