@@ -110,7 +110,11 @@ namespace CherryTomato
                 result.Year = (int) movie["year"];
 
                 // Handle the occasional instance where Runtime is not populated
-                result.Runtime = !movie["runtime"].HasValues ? null : (int?)movie["runtime"];
+                string runtime = movie["runtime"].ToString().Replace("\"\"", "");
+                if (!string.IsNullOrEmpty(runtime))
+                {
+                    result.Runtime = (int?)movie["runtime"];
+                }
 
                 result.Synopsis = (string) movie["synopsis"];
                 
