@@ -5,6 +5,7 @@ using System.Net;
 using System.Text;
 using CherryTomato.Entities;
 using System.Diagnostics;
+using System.IO;
 
 namespace CherryTomato
 {
@@ -17,6 +18,7 @@ namespace CherryTomato
         private const string MOVIE_LIST_URL = @"http://api.rottentomatoes.com/api/public/v1.0/lists/movies/{0}.json?apikey={1}";
         private const string DVD_LIST_URL = @"http://api.rottentomatoes.com/api/public/v1.0/lists/dvds.json?apikey={0}";
         private const string URL_QUERY = @"&q={2}&page_limit={3}&page={4}";
+        private const string MOVIE_ITEMS_URL = @"http://api.rottentomatoes.com/api/public/v1.0/movies/{0}/{1}.json?apikey={2}";
         #endregion
 
         public string ApiKey { get; set; }
@@ -46,7 +48,7 @@ namespace CherryTomato
         /// <returns>List of Movie Results</returns>
         public MovieSearchResults FindMovieByQuery(string query, int pageLimit=10, int startingPage=0)
         {
-            var url = String.Format(SEARCH_URL + URL_QUERY, ApiKey, query, pageLimit, startingPage);
+            var url = String.Format(SEARCH_URL + URL_QUERY, ApiKey, null, query, pageLimit, startingPage);
             return Parser.ParseMovieSearchResults(GetJSONString(url));
         }
 
@@ -57,10 +59,10 @@ namespace CherryTomato
         public MovieSearchResults GetBoxOfficeList()
         {
             var url = string.Format(MOVIE_LIST_URL, "box_office", ApiKey);
-            var search = Parser.ParseMovieSearchResults(GetJSONString(url));
+            var results = Parser.ParseMovieSearchResults(GetJSONString(url));
 
-            if (search.ResultCount == 0) search.ResultCount = search.Results.Count;
-            return search;
+            if (results.ResultCount == 0) results.ResultCount = results.Count;
+            return results;
         }
 
         /// <summary>
@@ -74,7 +76,7 @@ namespace CherryTomato
             var url = string.Format(MOVIE_LIST_URL + URL_QUERY, "in_theaters", ApiKey, null, page_limit, page_index);
             var search = Parser.ParseMovieSearchResults(GetJSONString(url));
 
-            if (search.ResultCount == 0) search.ResultCount = search.Results.Count;
+            if (search.ResultCount == 0) search.ResultCount = search.Count;
             return search;
         }
 
@@ -87,7 +89,7 @@ namespace CherryTomato
             var url = string.Format(MOVIE_LIST_URL, "opening", ApiKey);
             var search = Parser.ParseMovieSearchResults(GetJSONString(url));
 
-            if (search.ResultCount == 0) search.ResultCount = search.Results.Count;
+            if (search.ResultCount == 0) search.ResultCount = search.Count;
             return search;
         }
 
@@ -102,8 +104,15 @@ namespace CherryTomato
             var url = string.Format(MOVIE_LIST_URL + URL_QUERY, "upcoming", ApiKey, null, page_limit, page_index);
             var search = Parser.ParseMovieSearchResults(GetJSONString(url));
 
-            if (search.ResultCount == 0) search.ResultCount = search.Results.Count;
+            if (search.ResultCount == 0) search.ResultCount = search.Count;
             return search;
+        }
+
+
+        public IEnumerable<CastMember> GetCastByMovieID(int movieID)
+        {
+            string url = string.Format(MOVIE_ITEMS_URL, movieID, "cast", ApiKey);
+            return Parser.ParseCastMembers(GetJSONString(url));
         }
 
         /// <summary>

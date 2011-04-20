@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CherryTomato.Entities
 {
-    public class Movie
+    public class Movie : IComparable
     {
         public int RottenTomatoesId { get; set; }
         public string Title { get; set; }
@@ -31,6 +31,21 @@ namespace CherryTomato.Entities
             ReleaseDates = new List<ReleaseDate>();
             Ratings = new List<Rating>();
         }
+
+        #region IComparable Members
+
+        public int CompareTo(object obj)
+        {
+            if (obj == null || obj.GetType() != typeof(Movie))
+            {
+                throw new ArgumentException("Object is not a Movie type");
+            }
+
+            Movie temp = (Movie)obj;
+            return (temp.RottenTomatoesId.CompareTo(this.RottenTomatoesId));
+        }
+
+        #endregion
     }
 
     public class ReleaseDate
@@ -41,7 +56,7 @@ namespace CherryTomato.Entities
 
     public class CastMember
     {
-        public string Actor { get; set; }
+        public string Name { get; set; }
         public List<string> Characters { get; set; }
 
         public CastMember()

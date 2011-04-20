@@ -60,15 +60,15 @@ namespace CherryTomato
                 foreach (var castMember in castMembers)
                 {
                     CastMember member = new CastMember();
-                    member.Actor = (string)castMember["name"];
+                    member.Name = (string)castMember["name"];
                     var characters = (JArray)castMember["characters"];
                     if (characters != null)
                     {
                         foreach (var character in characters)
                         {
                             member.Characters.Add((string)character);
-                            movie.Cast.Add(member);
                         }
+                        movie.Cast.Add(member);
                     }
                 }
             }
@@ -143,12 +143,41 @@ namespace CherryTomato
             {
                 foreach (var movie in movies)
                 {
-                    Movie result = ParseMovie(movie.ToString());
-                    results.Results.Add(result);
+                    Movie m = ParseMovie(movie.ToString());
+                    results.Add(m);
                 }
             }
 
             return results;
+        }
+
+
+        public static IEnumerable<CastMember> ParseCastMembers(string json)
+        {
+            JToken jToken = JToken.FromObject(JObject.Parse(json));
+            List<CastMember> Cast = new List<CastMember>();
+
+            var castMembers = (JArray)jToken["cast"];
+            if (castMembers != null)
+            {
+                foreach (var castMember in castMembers)
+                {
+                    CastMember member = new CastMember();
+                    member.Name = (string)castMember["name"];
+                    var characters = (JArray)castMember["characters"];
+                    if (characters != null)
+                    {
+                        foreach (var character in characters)
+                        {
+                            member.Characters.Add((string)character);
+                        }
+
+                        Cast.Add(member);
+                    }
+                }
+            }
+
+            return Cast;
         }
     }
 }
