@@ -7,9 +7,8 @@ namespace CherryTomato
 {
     public class Tomato
     {
-
         #region API Endpoints
-        //This website lists all of the available endpoints:
+        //For future reference, this website lists all of the available endpoints:
         //http://developer.rottentomatoes.com/docs/read/JSON
 
         /// <summary>
@@ -31,7 +30,26 @@ namespace CherryTomato
         /// Endpoint for searching for the cast of an individual movie.
         /// </summary>
         private const string MOVIE_INDIVIDUAL_CAST = @"http://api.rottentomatoes.com/api/public/v1.0/movies/{1}/cast.json?apikey={0}";
+
+        /// <summary>
+        /// Endpoint for listing the current box office.
+        /// </summary>
+        private const string LIST_BOX_OFFICE = @"http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json";
         
+        /// <summary>
+        /// Endpoint for listing movies that are in theaters.
+        /// </summary>
+        private const string LIST_IN_THEATERS = @"http://api.rottentomatoes.com/api/public/v1.0/lists/movies/in_theaters.json";
+        
+        /// <summary>
+        /// Endpoint for listing opening movies.
+        /// </summary>
+        private const string LIST_OPENING_SOON = @"http://api.rottentomatoes.com/api/public/v1.0/lists/movies/opening.json";
+        
+        /// <summary>
+        /// Endpoint for listing upcoming movies.
+        /// </summary>
+        private const string LIST_UPCOMING = @"http://api.rottentomatoes.com/api/public/v1.0/lists/movies/upcoming.json";
         #endregion
         
         public string ApiKey { get; set; }
