@@ -5,8 +5,17 @@ using System.Text;
 
 namespace CherryTomato.Entities
 {
+    public delegate void SelectedIndexChangedEventHandler(object sender, EventArgs e);
+
     public class MovieSearchResults : ICollection<Movie>
     {
+        public event SelectedIndexChangedEventHandler SelectedIndexChanged;
+        public virtual void OnSelectedIndexChanged(EventArgs e)
+        {
+            if (SelectedIndexChanged != null)
+                SelectedIndexChanged(this, e);
+        }
+
         /// <summary>
         /// Total Number Of Results
         /// </summary>
@@ -24,25 +33,60 @@ namespace CherryTomato.Entities
         {
             ResultCount = 0;
             Movies = new List<Movie>();
+            selectedIndex = 0;
         }
 
+        /// <summary>
+        /// Gets or sets the index of the currently selected index
+        /// </summary>
+        private int selectedIndex;
+        public int SelectedIndex 
+        {
+            get { return selectedIndex; } 
+            set
+            {
+                selectedIndex = value;
+                OnSelectedIndexChanged(EventArgs.Empty);
+            }
+        }
 
+        /// <summary>
+        /// Gets the currently selected item
+        /// </summary>
+        public Movie SelectedValue 
+        {
+            get { return Movies.ElementAt(SelectedIndex); } 
+        }
+
+        #region LIST METHODS
+        /// <summary>
+        /// List indexer
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public Movie this[int index]
         {
             get { return Movies[index]; }
             set { Movies[index] = value; }
         }
 
-        public Movie this[string movieID]
+        /// <summary>
+        /// Sorts the Movies by their ID
+        /// </summary>
+        public void Sort()
         {
-            get { return Movies.Where(m => m.RottenTomatoesId.ToString() == movieID).FirstOrDefault(); }
-            set
-            {
-                Movie temp = Movies.Where(m => m.RottenTomatoesId.ToString() == movieID).FirstOrDefault();
-                if (temp != null) temp = value;
-                else throw new InvalidOperationException("Object does not exist");
-            }
+            Movies.Sort();
         }
+
+        /// <summary>
+        /// Sorts the Movies by their ID
+        /// </summary>
+        /// <param name="comparer">Comparer to implement for sorting</param>
+        public void Sort(IComparer<Movie> comparer)
+        {
+            Movies.Sort(comparer);
+        }
+        #endregion
 
         #region ICollection<Movie> Members
 

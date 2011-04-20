@@ -24,15 +24,8 @@ namespace CherryTomato.Examples
             //The Movie object, contains all sorts of goodies you might want to know about a movie.
             Console.WriteLine(movie.Title);
             Console.WriteLine(movie.Year);
-            foreach (var rating in movie.Ratings)
-            {
-                Console.WriteLine("{0} Rating: {1}", rating.Type, rating.Score);
-            }
 
-            foreach (var castMember in movie.Cast)
-            {
-                Console.WriteLine("{0} as {1}", castMember.Name, castMember.Characters[0]);
-            }
+
 
             //Example 2: Finding a movie by it's name. 
             string searchTerm = "Gone With The Wind";
@@ -45,8 +38,24 @@ namespace CherryTomato.Examples
                 Console.WriteLine("ID: {0} \n Title: {1} \n Runtime: {2}\n", result.RottenTomatoesId, result.Title, result.Runtime);
             }
 
+
+            // Testing the Selected Index Changed Event Handler
+            results.SelectedIndexChanged += 
+                new SelectedIndexChangedEventHandler(results_SelectedIndexChanged);
+
+            Console.WriteLine();
+            Console.WriteLine("Testing Selected Index Changed Event");
+            Console.WriteLine("Currently Selected Movie: {0}", results.SelectedValue.Title);
+            
+            Console.WriteLine();
+
+            results.SelectedIndex = 2;
+
+            Console.WriteLine();
+
+
             //Normally, the first result will be the one you're looking for.
-            var foundMovie = tomatoe.FindMovieById(results.ElementAt(0).RottenTomatoesId);
+            var foundMovie = tomatoe.FindMovieById(results[0].RottenTomatoesId);
             Console.WriteLine(foundMovie.Title);
             Console.WriteLine(foundMovie.Synopsis);
 
@@ -62,11 +71,12 @@ namespace CherryTomato.Examples
             {
                 Console.WriteLine("Name: {0}", actor.Name);
             }
-
-            Console.WriteLine();
-            Console.WriteLine("Fetch movie from list by it's id: ");
-            Console.WriteLine(results["9818"].Title);
         }
 
+        static void results_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Console.WriteLine("In the Index Changed Event");
+            Console.WriteLine("New Selected Movie: {0}", (sender as MovieSearchResults).SelectedValue.Title);
+        }
     }
 }

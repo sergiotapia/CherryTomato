@@ -130,7 +130,7 @@ namespace CherryTomato
         /// </summary>
         /// <param name="json">JSON string to parse</param>
         /// <returns>MovieSearchResult object containing a list of Movie objects</returns>
-        public static MovieSearchResults ParseMovieSearchResults(string json)
+        public static MovieSearchResults ParseMovieSearchResults(string json, int index=0, int limit=10)
         {
             JObject jObject = JObject.Parse(json);
             MovieSearchResults results = new MovieSearchResults();
