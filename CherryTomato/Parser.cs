@@ -97,7 +97,7 @@ namespace CherryTomato
             var movies = (JArray) jObject["movies"];
             foreach (var movie in movies)
             {
-                Result result = new Result();
+                Movie result = new Movie();
 
                 result.Title = (string)movie["title"];
 
@@ -105,10 +105,15 @@ namespace CherryTomato
                 string idInStringForm = movie["id"].ToString().Substring(1, tmpIdString.Length);
                 result.RottenTomatoesId = Convert.ToInt32(idInStringForm);
                 
-
-                
                 result.Year = (int) movie["year"];
-                result.Runtime = (int) movie["runtime"];
+
+                // Handle the occasional instance where Runtime is not populated
+                result.Runtime = !movie["runtime"].HasValues ? null : (int?)movie["runtime"];
+                if (!string.IsNullOrEmpty(runtime))
+                {
+                    result.Runtime = (int?)movie["runtime"];
+                }
+
                 result.Synopsis = (string) movie["synopsis"];
                 
                 var dates = (JObject)movie["release_dates"];

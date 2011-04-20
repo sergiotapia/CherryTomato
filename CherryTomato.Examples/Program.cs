@@ -38,7 +38,7 @@ namespace CherryTomato.Examples
             Console.WriteLine("Found {0} results.", results.ResultCount);
             foreach (var result in results.Results)
             {
-                Console.WriteLine("ID: {0} - Title: {1}", result.RottenTomatoesId, result.Title);
+                Console.WriteLine("ID: {0} - Title: {1} - Runtime: {2}", result.RottenTomatoesId, result.Title, result.Runtime);
             }
 
             //Normally, the first result will be the one you're looking for.
