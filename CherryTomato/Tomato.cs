@@ -33,9 +33,9 @@ namespace CherryTomato
         /// <param name="query">Search term</param>
         /// <param name="pageLimit">Amount of result pages to load</param>
         /// <returns>MovieSearchResults object</returns>
-        public MovieSearchResults FindMovieByQuery(string query, int pageLimit = 10)
+        public MovieSearchResults FindMovieByQuery(string query, int pageLimit = 10, int page=0)
         {
-            var url = String.Format(MOVIE_SEARCH, ApiKey, query, pageLimit);
+            var url = String.Format(MOVIE_SEARCH, ApiKey, query, pageLimit, page);
             var jsonResponse = GetJsonResponse(url);
             return Parser.ParseMovieSearchResults(jsonResponse);
         }
@@ -92,6 +92,16 @@ namespace CherryTomato
             return results;
         }
 
+
+        public IEnumerable<CastMember> GetFullCastByMovieID(int movieID)
+        {
+            var url = string.Format(MOVIE_INDIVIDUAL_CAST, ApiKey, movieID);
+            var jsonResponse = GetJsonResponse(url);
+            var results = Parser.ParseFullMovieCast(jsonResponse);
+
+            return results;
+        }
+
         /// <summary>
         /// Fetches the JSON string from the URL.
         /// </summary>
@@ -122,7 +132,7 @@ namespace CherryTomato
         /// <summary>
         /// Endpoint for searching for movies via a text query.
         /// </summary>
-        private const string MOVIE_SEARCH = @"http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey={0}&q={1}&page_limit={2}";
+        private const string MOVIE_SEARCH = @"http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey={0}&q={1}&page_limit={2}&page={3}";
 
         /// <summary>
         /// Endpoint for searching for an individual movie via it's RottenTomatoes ID number.

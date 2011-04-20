@@ -37,6 +37,14 @@ namespace CherryTomato
             return movie;
         }
 
+
+        public static IEnumerable<CastMember> ParseFullMovieCast(string json)
+        {
+            JObject jObject = JObject.Parse(json);
+            List<CastMember> Cast = ParseCastMembers(jObject["cast"]);
+            return Cast;
+        }
+
         /// <summary>
         /// Parse Search Results For Movies
         /// </summary>
