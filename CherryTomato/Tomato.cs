@@ -108,7 +108,11 @@ namespace CherryTomato
             return search;
         }
 
-
+        /// <summary>
+        /// Gets a list of CastMembers by a movie's ID
+        /// </summary>
+        /// <param name="movieID">The ID of the movie the cast belongs to</param>
+        /// <returns>IEnumerable list of CastMembers</returns>
         public IEnumerable<CastMember> GetCastByMovieID(int movieID)
         {
             string url = string.Format(MOVIE_ITEMS_URL, movieID, "cast", ApiKey);
