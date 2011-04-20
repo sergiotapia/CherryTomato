@@ -93,20 +93,6 @@ namespace CherryTomato
         }
 
         /// <summary>
-        /// Gets a list of cast members by searching for a movie via it's RottenTomatoes ID.
-        /// </summary>
-        /// <param name="movieId">RottenTomatoes movie ID</param>
-        /// <returns>IEnumerable collection of Cast Members</returns>
-        public IEnumerable<CastMember> FindCastByMovieId(int movieId)
-        {
-            var url = string.Format(MOVIE_INDIVIDUAL_CAST, ApiKey, movieId);
-            var jsonResponse = GetJsonResponse(url);
-
-            var castMembers = Parser.ParseCastMembers(jsonResponse);
-            return castMembers;
-        }
-
-        /// <summary>
         /// Fetches the JSON string from the URL.
         /// </summary>
         /// <param name="url">URL to download the JSON from.</param>

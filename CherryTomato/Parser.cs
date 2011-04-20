@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,113 +17,182 @@ namespace CherryTomato
         /// <returns>Movie object</returns>
         public static Movie ParseMovie(string json)
         {
-            JToken jToken = JToken.FromObject(JObject.Parse(json));
+            JObject jObject = JObject.Parse(json);
             Movie movie = new Movie();
 
-            movie.RottenTomatoesId = Convert.ToInt32(jToken["id"].ToString().Replace("\"", ""));
-            movie.Title = (string)jToken["title"];
-            movie.Year = (int)jToken["year"];
-            movie.MpaaRating = (string)jToken["mpaa_rating"];
-
-            // jToken["runtime"] is occasionally null or has the value of "" in the JSON string.
-            // Here we remove any double quotes and if the string is not empty we convert 
-            // it to an int and set the value of movie.Runtime.
-            // If jToken["runtime"] has no value then movie.Runtime will be null
-            string runtime = jToken["runtime"].ToString().Replace("\"", "");
-            if (!string.IsNullOrEmpty(runtime))
-                movie.Runtime = Convert.ToInt32(runtime);
-
-            movie.Synopsis = (string)jToken["synopsis"];
-
-            var directors = (JArray)jToken["abridged_directors"];
-
-            if (directors != null)
-            {
-                foreach (var director in directors)
-                {
-                    movie.Directors.Add((string)director["name"]);
-                }
-            }
-
-            var genres = (JArray)jToken["genres"];
-            if (genres != null)
-            {
-                foreach (var genre in genres)
-                {
-                    movie.Genres.Add((string)genre);
-                }
-            }
-
-            var castMembers = (JArray)jToken["abridged_cast"];
-            if (castMembers != null)
-            {
-                foreach (var castMember in castMembers)
-                {
-                    CastMember member = new CastMember();
-                    member.Name = (string)castMember["name"];
-                    var characters = (JArray)castMember["characters"];
-                    if (characters != null)
-                    {
-                        foreach (var character in characters)
-                        {
-                            member.Characters.Add((string)character);
-                        }
-                        movie.Cast.Add(member);
-                    }
-                }
-            }
-
-            var links = (JObject)jToken["links"];
-            if (links != null)
-            {
-                foreach (var link in links)
-                {
-                    Link newLink = new Link();
-                    newLink.Type = (string)link.Key;
-                    newLink.Url = (string)link.Value;
-                    movie.Links.Add(newLink);
-                }
-            }
-
-            var posters = (JObject)jToken["posters"];
-            if (posters != null)
-            {
-                foreach (var poster in posters)
-                {
-                    Poster newPoster = new Poster();
-                    newPoster.Type = (string)poster.Key;
-                    newPoster.Url = (string)poster.Value;
-                    movie.Posters.Add(newPoster);
-                }
-            }
-
-            var ratings = (JObject)jToken["ratings"];
-            if (ratings != null)
-            {
-                foreach (var rating in ratings)
-                {
-                    Rating newRating = new Rating();
-                    newRating.Type = (string)rating.Key;
-                    newRating.Score = (int)rating.Value;
-                    movie.Ratings.Add(newRating);
-                }
-            }
-
-            var dates = (JObject)jToken["release_dates"];
-            if (dates != null)
-            {
-                foreach (var date in dates)
-                {
-                    ReleaseDate releaseDate = new ReleaseDate();
-                    releaseDate.Type = (string)date.Key;
-                    var tmpDate = ((string)date.Value).Substring(0, ((string)date.Value).Count());
-                    releaseDate.Date = DateTime.Parse(tmpDate);
-                    movie.ReleaseDates.Add(releaseDate);
-                }
-            }
+            movie.RottenTomatoesId = ParseRottenTomatoesId(jObject["id"]);
+            movie.Title = ParseTitle(jObject["title"]);
+            movie.Year = ParseYear(jObject["year"]);
+            movie.MpaaRating = ParseMpaaRating(jObject["mpaa_rating"]);
+            movie.Runtime = ParseRunTime(jObject["runtime"]);
+            movie.Synopsis = ParseSynopsis(jObject["synopsis"]);
+            movie.Directors = ParseDirectors(jObject["abridged_directors"]);
+            movie.Genres = ParseGenres(jObject["genres"]);
+            movie.Cast = ParseCastMembers(jObject["abridged_cast"]);
+            movie.Links = ParseLinks(jObject["links"]);
+            movie.Posters = ParsePosters(jObject["posters"]);
+            movie.Ratings = ParseRatings(jObject["ratings"]);
+            movie.ReleaseDates = ParseReleaseDates(jObject["release_dates"]);
 
             return movie;
         }
+
+        #region "Individual attribute parsing."
+        private static List<ReleaseDate> ParseReleaseDates(JToken jToken)
+        {
+            List<ReleaseDate> releaseDates = new List<ReleaseDate>();
+            var jsonArray = (JObject)jToken;
+
+            if (jsonArray == null)
+                return releaseDates;
+
+            foreach (var releaseDate in jsonArray)
+            {
+                ReleaseDate newDate = new ReleaseDate();
+                newDate.Type = (string) releaseDate.Key;
+
+                var tmpDate = ((string)releaseDate.Value).Substring(0, ((string)releaseDate.Value).Count());
+                newDate.Date = DateTime.Parse(tmpDate);
+                
+                releaseDates.Add(newDate);
+            }
+
+            return releaseDates;
+        }
+
+        private static List<Rating> ParseRatings(JToken jToken)
+        {
+            List<Rating> ratings = new List<Rating>();
+            var jsonArray = (JObject)jToken;
+
+            if (jsonArray == null)
+                return ratings;
+
+            foreach (var rating in jsonArray)
+            {
+                Rating newRating = new Rating() { Type = (string)rating.Key, Score = (int)rating.Value };
+                ratings.Add(newRating);
+            }
+
+            return ratings;
+        }
+
+        private static List<Poster> ParsePosters(JToken jToken)
+        {
+            List<Poster> posters = new List<Poster>();
+            var jsonArray = (JObject)jToken;
+
+            if (jsonArray == null)
+                return posters;
+
+            foreach (var poster in jsonArray)
+            {
+                Poster newPoster = new Poster() { Type = (string)poster.Key, Url = (string)poster.Value };
+                posters.Add(newPoster);
+            }
+
+            return posters;
+        }
+
+        private static List<Link> ParseLinks(JToken jToken)
+        {
+            List<Link> links = new List<Link>();
+            var jsonArray = (JObject) jToken;
+
+            if (jsonArray == null)
+                return links;
+
+            foreach (var link in jsonArray)
+            {
+                Link newLink = new Link {Type = (string) link.Key, Url = (string) link.Value};
+                links.Add(newLink);
+            }
+
+            return links;
+        }
+
+        private static List<CastMember> ParseCastMembers(JToken jToken)
+        {
+            List<CastMember> cast = new List<CastMember>();
+            var jsonArray = (JArray) jToken;
+
+            if (jsonArray == null)
+                return cast;
+
+            foreach (var castMember in jsonArray)
+            {
+                CastMember member = new CastMember();
+                member.Name = (string)castMember["name"];
+
+                var characters = (JArray) castMember["characters"];
+                if (characters != null)
+                {
+                    foreach (var character in characters)
+                    {
+                        member.Characters.Add((string) character);
+                    }
+                }
+
+                cast.Add(member);
+            }
+
+            return cast;
+        }
+
+        private static List<string> ParseGenres(JToken jToken)
+        {
+            List<string> genres = new List<string>();
+            var jsonArray = (JArray) jToken;
+
+            if (jsonArray == null)
+                return genres;
+
+            genres.AddRange(jsonArray.Select(genre => (string) genre));
+            return genres;
+        }
+
+        private static List<string> ParseDirectors(JToken jToken)
+        {
+            List<string> directors = new List<string>();
+            var jsonArray = (JArray) jToken;
+
+            if (jsonArray == null) 
+                return directors;
+
+            directors.AddRange(jsonArray.Select(director => (string) director["name"]));
+            return directors;
+        }
+
+        private static string ParseSynopsis(JToken jToken)
+        {
+            return jToken.Value<string>();
+        }
+
+        private static int? ParseRunTime(JToken jToken)
+        {
+            return jToken.Value<int>();
+        }
+
+        private static string ParseMpaaRating(JToken jToken)
+        {
+            return jToken.Value<string>();
+        }
+
+        private static int ParseYear(JToken jToken)
+        {
+            return jToken.Value<int>();
+        }
+
+        private static string ParseTitle(JToken jToken)
+        {
+            return jToken.Value<string>();
+        }
+
+        private static int ParseRottenTomatoesId(JToken jToken)
+        {
+            return jToken.Value<int>();
+        }
+        #endregion
 
         /// <summary>
         /// Parse Search Results For Movies
@@ -151,33 +220,5 @@ namespace CherryTomato
             return results;
         }
 
-
-        public static IEnumerable<CastMember> ParseCastMembers(string json)
-        {
-            JToken jToken = JToken.FromObject(JObject.Parse(json));
-            List<CastMember> Cast = new List<CastMember>();
-
-            var castMembers = (JArray)jToken["cast"];
-            if (castMembers != null)
-            {
-                foreach (var castMember in castMembers)
-                {
-                    CastMember member = new CastMember();
-                    member.Name = (string)castMember["name"];
-                    var characters = (JArray)castMember["characters"];
-                    if (characters != null)
-                    {
-                        foreach (var character in characters)
-                        {
-                            member.Characters.Add((string)character);
-                        }
-
-                        Cast.Add(member);
-                    }
-                }
-            }
-
-            return Cast;
-        }
     }
 }
