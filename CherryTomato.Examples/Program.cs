@@ -16,7 +16,7 @@ namespace CherryTomato.Examples
 
 
             //Example 2: Searching for a movie by it's name.
-            //FindingMovieByName();
+            FindingMovieByName();
             
 
             Console.ReadKey();

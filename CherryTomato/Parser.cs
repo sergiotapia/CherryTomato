@@ -37,6 +37,33 @@ namespace CherryTomato
             return movie;
         }
 
+        /// <summary>
+        /// Parse Search Results For Movies
+        /// </summary>
+        /// <param name="json">JSON string to parse</param>
+        /// <returns>MovieSearchResult object containing a list of Movie objects</returns>
+        public static MovieSearchResults ParseMovieSearchResults(string json)
+        {
+            JObject jObject = JObject.Parse(json);
+
+            var result = new MovieSearchResults();
+
+            if (jObject["total"] != null)
+                result.ResultCount = (int)jObject["total"];
+
+            var movies = (JArray)jObject["movies"];
+            if (movies != null)
+            {
+                foreach (var movie in movies)
+                {
+                    Movie m = ParseMovie(movie.ToString());
+                    result.Add(m);
+                }
+            }
+
+            return result;
+        }
+
         #region "Individual attribute parsing."
         private static List<ReleaseDate> ParseReleaseDates(JToken jToken)
         {
@@ -175,12 +202,12 @@ namespace CherryTomato
 
         private static string ParseMpaaRating(JToken jToken)
         {
-            return jToken.Value<string>();
+            return jToken == null ? String.Empty : jToken.Value<string>();
         }
 
         private static int ParseYear(JToken jToken)
         {
-            return jToken.Value<int>();
+            return jToken.Value<string>() == String.Empty ? -1 : jToken.Value<int>();
         }
 
         private static string ParseTitle(JToken jToken)
@@ -193,32 +220,6 @@ namespace CherryTomato
             return jToken.Value<int>();
         }
         #endregion
-
-        /// <summary>
-        /// Parse Search Results For Movies
-        /// </summary>
-        /// <param name="json">JSON string to parse</param>
-        /// <returns>MovieSearchResult object containing a list of Movie objects</returns>
-        public static MovieSearchResults ParseMovieSearchResults(string json, int index=0, int limit=10)
-        {
-            JObject jObject = JObject.Parse(json);
-            MovieSearchResults results = new MovieSearchResults();
-
-            if (jObject["total"] != null)
-                results.ResultCount = (int)jObject["total"];
-
-            var movies = (JArray) jObject["movies"];
-            if (movies != null)
-            {
-                foreach (var movie in movies)
-                {
-                    Movie m = ParseMovie(movie.ToString());
-                    results.Add(m);
-                }
-            }
-
-            return results;
-        }
 
     }
 }
