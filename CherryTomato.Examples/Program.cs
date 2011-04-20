@@ -15,11 +15,10 @@ namespace CherryTomato.Examples
 
             //A Tomato is the main object that will allow you to access RottenTomatoes information. 
             //Be sure to provide it with your API key in String format.
-            var tomatoe = new Tomato(apiKey);
+            var tomato = new Tomato(apiKey);
 
             //Example 1: Finding a movie by it's RottenTomatoes internal ID number.
-            Movie movie = tomatoe.FindMovieById(9818);
-
+            Movie movie = tomato.FindMovieById(9818);
 
             //The Movie object, contains all sorts of goodies you might want to know about a movie.
             Console.WriteLine(movie.Title);
@@ -29,7 +28,7 @@ namespace CherryTomato.Examples
 
             //Example 2: Finding a movie by it's name. 
             string searchTerm = "Gone With The Wind";
-            var results = tomatoe.FindMovieByQuery(searchTerm);
+            var results = tomato.FindMovieByQuery(searchTerm);
             
             Console.WriteLine("Searching with query: [" + searchTerm + "]");
             Console.WriteLine("Found {0} results.", results.ResultCount);
@@ -39,9 +38,7 @@ namespace CherryTomato.Examples
             }
 
             //Normally, the first result will be the one you're looking for.
-            var foundMovie = tomatoe.FindMovieById(results.Results[0].RottenTomatoesId);
-            Console.WriteLine(foundMovie.Title);
-            Console.WriteLine(foundMovie.Synopsis);
+            
 
             Console.ReadKey();
         }
