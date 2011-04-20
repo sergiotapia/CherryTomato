@@ -2,23 +2,38 @@
 using System.Collections.Generic;
 using System.Net;
 using CherryTomato.Entities;
-using System.Diagnostics;
-using System.IO;
 
 namespace CherryTomato
 {
     public class Tomato
     {
 
-        #region URL CONSTANTS
-        private const string MOVIE_URL = @"http://api.rottentomatoes.com/api/public/v1.0/movies/{0}.json?apikey={1}";
-        private const string SEARCH_URL = @"http://api.rottentomatoes.com/api/public/v1.0/movies/movies.json?apikey={0}";
-        private const string MOVIE_LIST_URL = @"http://api.rottentomatoes.com/api/public/v1.0/lists/movies/{0}.json?apikey={1}";
-        private const string DVD_LIST_URL = @"http://api.rottentomatoes.com/api/public/v1.0/lists/dvds.json?apikey={0}";
-        private const string URL_QUERY = @"&q={2}&page_limit={3}&page={4}";
-        private const string MOVIE_ITEMS_URL = @"http://api.rottentomatoes.com/api/public/v1.0/movies/{0}/{1}.json?apikey={2}";
-        #endregion
+        #region API Endpoints
+        //This website lists all of the available endpoints:
+        //http://developer.rottentomatoes.com/docs/read/JSON
 
+        /// <summary>
+        /// Endpoint for searching for movies via a text query.
+        /// </summary>
+        private const string MOVIE_SEARCH = @"http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey={0}&q={1}&page_limit={3}";
+
+        /// <summary>
+        /// Endpoint for searching for an individual movie via it's RottenTomatoes ID number.
+        /// </summary>
+        private const string MOVIE_INDIVIDUAL_INFORMATION = @"http://api.rottentomatoes.com/api/public/v1.0/movies/{1}.json?apikey={0}";
+
+        /// <summary>
+        /// Endpoint for searching for reviews for an individual movie.
+        /// </summary>
+        private const string MOVIE_INDIVIDUAL_REVIEWS = @"http://api.rottentomatoes.com/api/public/v1.0/movies/{1}/reviews.json?apikey={0}";
+
+        /// <summary>
+        /// Endpoint for searching for the cast of an individual movie.
+        /// </summary>
+        private const string MOVIE_INDIVIDUAL_CAST = @"http://api.rottentomatoes.com/api/public/v1.0/movies/{1}/cast.json?apikey={0}";
+        
+        #endregion
+        
         public string ApiKey { get; set; }
 
         public Tomato(string apiKey)
