@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Configuration;
 using CherryTomato.Entities;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace CherryTomato.Examples
 {
@@ -21,24 +24,18 @@ namespace CherryTomato.Examples
             //The Movie object, contains all sorts of goodies you might want to know about a movie.
             Console.WriteLine(movie.Title);
             Console.WriteLine(movie.Year);
-            foreach (var rating in movie.Ratings)
-            {
-                Console.WriteLine("{0} Rating: {1}", rating.Type, rating.Score);
-            }
 
-            foreach (var castMember in movie.Cast)
-            {
-                Console.WriteLine("{0} as {1}", castMember.Actor, castMember.Characters[0]);
-            }
+
 
             //Example 2: Finding a movie by it's name. 
-            var results = tomatoe.FindMovieByQuery("Source Code", 2, 1);
+            string searchTerm = "Gone With The Wind";
+            var results = tomatoe.FindMovieByQuery(searchTerm);
             
-            Console.WriteLine("Searching with query: [Source Code]");
+            Console.WriteLine("Searching with query: [" + searchTerm + "]");
             Console.WriteLine("Found {0} results.", results.ResultCount);
-            foreach (var result in results.Results)
+            foreach (var result in results)
             {
-                Console.WriteLine("ID: {0} - Title: {1} - Runtime: {2}", result.RottenTomatoesId, result.Title, result.Runtime);
+                Console.WriteLine("ID: {0} \n Title: {1} \n Runtime: {2}\n", result.RottenTomatoesId, result.Title, result.Runtime);
             }
 
             //Normally, the first result will be the one you're looking for.
