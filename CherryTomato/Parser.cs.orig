@@ -1,0 +1,184 @@
+﻿using System;
+using System.Linq;
+using CherryTomato.Entities;
+using Newtonsoft.Json.Linq;
+
+namespace CherryTomato
+{
+    public static class Parser
+    {
+        public static Movie ParseMovie(string json)
+        {
+            JObject jObject = JObject.Parse(json);
+            Movie movie = new Movie();
+
+            movie.RottenTomatoesId = (int) jObject["id"];
+            movie.Title = (string) jObject["title"];
+            movie.Year = (int)jObject["year"];
+            movie.MpaaRating = (string) jObject["mpaa_rating"];
+            movie.Runtime = (int) jObject["runtime"];
+            movie.Synopsis = (string)jObject["synopsis"];
+
+            var directors = (JArray) jObject["abridged_directors"];
+            foreach (var director in directors)
+            {
+                movie.Directors.Add((string)director["name"]);
+            }
+
+            var genres = (JArray) jObject["genres"];
+            foreach (var genre in genres)
+            {
+                movie.Genres.Add((string)genre);
+            }
+
+            var castMembers = (JArray) jObject["abridged_cast"];
+            foreach (var castMember in castMembers)
+            {
+                CastMember member = new CastMember();
+                member.Actor = (string) castMember["name"];
+                var characters = (JArray) castMember["characters"];
+                if (characters != null)
+                {
+                    foreach (var character in characters)
+                    {
+                        member.Characters.Add((string)character);
+                        movie.Cast.Add(member);
+                    }
+                }
+            }
+
+            var links = (JObject)jObject["links"];
+            foreach (var link in links)
+            {
+                Link newLink = new Link();
+                newLink.Type = (string)link.Key;
+                newLink.Url = (string)link.Value;
+                movie.Links.Add(newLink);
+            }
+
+            var posters = (JObject)jObject["posters"];
+            foreach (var poster in posters)
+            {
+                Poster newPoster = new Poster();
+                newPoster.Type = (string)poster.Key;
+                newPoster.Url = (string)poster.Value;
+                movie.Posters.Add(newPoster);
+            }
+
+            var ratings = (JObject)jObject["ratings"];
+            foreach (var rating in ratings)
+            {
+                Rating newRating = new Rating();
+                newRating.Type = (string)rating.Key;
+                newRating.Score = (int)rating.Value;
+                movie.Ratings.Add(newRating);
+            }
+
+            var dates = (JObject)jObject["release_dates"];
+            foreach (var date in dates)
+            {
+                ReleaseDate releaseDate = new ReleaseDate();
+                releaseDate.Type = (string)date.Key;
+                var tmpDate = ((string) date.Value).Substring(0, ((string) date.Value).Count());
+                releaseDate.Date = DateTime.Parse(tmpDate);
+                movie.ReleaseDates.Add(releaseDate);
+            }
+
+            return movie;
+        }
+
+        public static MovieSearchResults ParseMovieSearchResults(string json)
+        {
+            JObject jObject = JObject.Parse(json);
+            MovieSearchResults results = new MovieSearchResults();
+
+            results.ResultCount = (int)jObject["total"];
+
+            var movies = (JArray) jObject["movies"];
+            foreach (var movie in movies)
+            {
+                Result result = new Result();
+
+                result.Title = (string)movie["title"];
+
+                var tmpIdString = (string)movie["id"];
+                string idInStringForm = movie["id"].ToString().Substring(1, tmpIdString.Length);
+                result.RottenTomatoesId = Convert.ToInt32(idInStringForm);
+                
+<<<<<<< HEAD
+=======
+                result.Year = (int) movie["year"];
+
+                // Handle the occasional instance where Runtime is not populated
+                string runtime = movie["runtime"].ToString().Replace("\"\"", "");
+                if (!string.IsNullOrEmpty(runtime))
+                {
+                    result.Runtime = (int?)movie["runtime"];
+                }
+>>>>>>> 603251e... small adjustment to the way null Runtime's are handled in parser.cs
+
+                
+                result.Year = (int) movie["year"];
+                result.Runtime = (int) movie["runtime"];
+                result.Synopsis = (string) movie["synopsis"];
+                
+                var dates = (JObject)movie["release_dates"];
+                foreach (var date in dates)
+                {
+                    ReleaseDate releaseDate = new ReleaseDate();
+                    releaseDate.Type = (string)date.Key;
+                    var tmpDate = ((string) date.Value).Substring(0, ((string) date.Value).Count());
+                    releaseDate.Date = DateTime.Parse(tmpDate);
+                    result.ReleaseDates.Add(releaseDate);
+                }
+
+                var ratings = (JObject)movie["ratings"];
+                foreach (var rating in ratings)
+                {
+                    Rating newRating = new Rating();
+                    newRating.Type = (string)rating.Key;
+                    newRating.Score = (int)rating.Value;
+                    result.Ratings.Add(newRating);
+                }
+
+                var posters = (JObject)movie["posters"];
+                foreach (var poster in posters)
+                {
+                    Poster newPoster = new Poster();
+                    newPoster.Type = (string)poster.Key;
+                    newPoster.Url = (string)poster.Value;
+                    result.Posters.Add(newPoster);
+                }
+
+                var castMembers = (JArray)movie["abridged_cast"];
+                foreach (var castMember in castMembers)
+                {
+                    CastMember member = new CastMember();
+                    member.Actor = (string)castMember["name"];
+                    var characters = (JArray)castMember["characters"];
+                    if (characters != null)
+                    {
+                        foreach (var character in characters)
+                        {
+                            member.Characters.Add((string)character);
+                            result.Cast.Add(member);
+                        }   
+                    }
+                }
+
+                var links = (JObject)movie["links"];
+                foreach (var link in links)
+                {
+                    Link newLink = new Link();
+                    newLink.Type = (string)link.Key;
+                    newLink.Url = (string)link.Value;
+                    result.Links.Add(newLink);
+                }
+
+                results.Results.Add(result);
+            }
+
+            return results;
+        }
+    }
+}

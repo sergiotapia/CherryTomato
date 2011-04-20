@@ -11,72 +11,46 @@ namespace CherryTomato.Examples
     {
         static void Main(string[] args)
         {
+            //Example 1: Finding a movie by it's ID number.
+            FindingMovieByIdNumber();
+
+
+            //Example 2: Searching for a movie by it's name.
+            FindingMovieByName();
+            
+
+            Console.ReadKey();
+        }
+
+        private static void FindingMovieByName()
+        {
             string apiKey = ConfigurationManager.AppSettings["ApiKey"];
 
             //A Tomato is the main object that will allow you to access RottenTomatoes information. 
             //Be sure to provide it with your API key in String format.
-            var tomatoe = new Tomato(apiKey);
+            var tomato = new Tomato(apiKey);
 
-            //Example 1: Finding a movie by it's RottenTomatoes internal ID number.
-            Movie movie = tomatoe.FindMovieById(9818);
+            var results = tomato.FindMovieByQuery("The Incredible Hulk");
+            foreach (var movieSearchResult in results)
+            {
+                Console.WriteLine(movieSearchResult.Title);
+            }
+        }
 
+        private static void FindingMovieByIdNumber()
+        {
+            string apiKey = ConfigurationManager.AppSettings["ApiKey"];
+
+            //A Tomato is the main object that will allow you to access RottenTomatoes information. 
+            //Be sure to provide it with your API key in String format.
+            var tomato = new Tomato(apiKey);
+
+            //Finding a movie by it's RottenTomatoes internal ID number.
+            Movie movie = tomato.FindMovieById(9818);
 
             //The Movie object, contains all sorts of goodies you might want to know about a movie.
             Console.WriteLine(movie.Title);
             Console.WriteLine(movie.Year);
-
-
-
-            //Example 2: Finding a movie by it's name. 
-            string searchTerm = "Gone With The Wind";
-            var results = tomatoe.FindMovieByQuery(searchTerm);
-            
-            Console.WriteLine("Searching with query: [" + searchTerm + "]");
-            Console.WriteLine("Found {0} results.", results.ResultCount);
-            foreach (var result in results)
-            {
-                Console.WriteLine("ID: {0} \n Title: {1} \n Runtime: {2}\n", result.RottenTomatoesId, result.Title, result.Runtime);
-            }
-
-
-            // Testing the Selected Index Changed Event Handler
-            results.SelectedIndexChanged += 
-                new SelectedIndexChangedEventHandler(results_SelectedIndexChanged);
-
-            Console.WriteLine();
-            Console.WriteLine("Testing Selected Index Changed Event");
-            Console.WriteLine("Currently Selected Movie: {0}", results.SelectedValue.Title);
-            
-            Console.WriteLine();
-
-            results.SelectedIndex = 2;
-
-            Console.WriteLine();
-
-
-            //Normally, the first result will be the one you're looking for.
-            var foundMovie = tomatoe.FindMovieById(results[0].RottenTomatoesId);
-            Console.WriteLine(foundMovie.Title);
-            Console.WriteLine(foundMovie.Synopsis);
-
-            Console.WriteLine();
-
-            // Testing with Gone With The Wind ID: 9818
-            var Cast = (from c in tomatoe.GetCastByMovieID(9818).AsParallel()
-                        where c.Name.Split(' ')[1].Contains("gh")
-                        orderby c.Name descending
-                        select c);
-
-            foreach (var actor in Cast)
-            {
-                Console.WriteLine("Name: {0}", actor.Name);
-            }
-        }
-
-        static void results_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Console.WriteLine("In the Index Changed Event");
-            Console.WriteLine("New Selected Movie: {0}", (sender as MovieSearchResults).SelectedValue.Title);
         }
     }
 }

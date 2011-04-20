@@ -2,25 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using CherryTomato.Entities;
-using System.Diagnostics;
-using System.IO;
 
 namespace CherryTomato
 {
     public class Tomato
     {
-
-        #region URL CONSTANTS
-        private const string MOVIE_URL = @"http://api.rottentomatoes.com/api/public/v1.0/movies/{0}.json?apikey={1}";
-        private const string SEARCH_URL = @"http://api.rottentomatoes.com/api/public/v1.0/movies/movies.json?apikey={0}";
-        private const string MOVIE_LIST_URL = @"http://api.rottentomatoes.com/api/public/v1.0/lists/movies/{0}.json?apikey={1}";
-        private const string DVD_LIST_URL = @"http://api.rottentomatoes.com/api/public/v1.0/lists/dvds.json?apikey={0}";
-        private const string URL_QUERY = @"&q={2}&page_limit={3}&page={4}";
-        private const string MOVIE_ITEMS_URL = @"http://api.rottentomatoes.com/api/public/v1.0/movies/{0}/{1}.json?apikey={2}";
-        #endregion
-
         public string ApiKey { get; set; }
 
         public Tomato(string apiKey)
@@ -35,101 +22,142 @@ namespace CherryTomato
         /// <returns>Movie object.</returns>
         public Movie FindMovieById(int movieId)
         {
-            var url = String.Format(MOVIE_URL, movieId, ApiKey);
-            return Parser.ParseMovie(GetJSONString(url));
+            var url = String.Format(MOVIE_INDIVIDUAL_INFORMATION, ApiKey, movieId);
+            var jsonResponse = GetJsonResponse(url);
+            return Parser.ParseMovie(jsonResponse);
         }
 
         /// <summary>
         /// Returns a MovieSearchResults object with the amount of results found and the results.
         /// </summary>
-        /// <param name="query">Search parameter</param>
+        /// <param name="query">Search term</param>
         /// <param name="pageLimit">Amount of result pages to load</param>
-        /// <param name="startingPage">Which page to start on</param>
-        /// <returns>List of Movie Results</returns>
-        public MovieSearchResults FindMovieByQuery(string query, int pageLimit=10, int startingPage=0)
+        /// <returns>MovieSearchResults object</returns>
+        public MovieSearchResults FindMovieByQuery(string query, int pageLimit = 10)
         {
-            var url = String.Format(SEARCH_URL + URL_QUERY, ApiKey, null, query, pageLimit, startingPage);
-            return Parser.ParseMovieSearchResults(GetJSONString(url));
+            var url = String.Format(MOVIE_SEARCH, ApiKey, query, pageLimit);
+            var jsonResponse = GetJsonResponse(url);
+            return Parser.ParseMovieSearchResults(jsonResponse);
         }
 
         /// <summary>
-        /// Gets a list of Box Office's Top Ten movies
+        /// Gets a list of Movies currently at the top in the Box Office.
         /// </summary>
-        /// <returns>MovieSearchResults</returns>
-        public MovieSearchResults GetBoxOfficeList()
+        /// <returns>MovieSearchResult object</returns>
+        public MovieSearchResults FindBoxOfficeList()
         {
-            var url = string.Format(MOVIE_LIST_URL, "box_office", ApiKey);
-            var results = Parser.ParseMovieSearchResults(GetJSONString(url));
+            var url = string.Format(LIST_BOX_OFFICE, ApiKey);
+            string jsonResponse = GetJsonResponse(url);
+            var results = Parser.ParseMovieSearchResults(jsonResponse);
 
-            if (results.ResultCount == 0) results.ResultCount = results.Count;
             return results;
         }
 
         /// <summary>
-        /// Gets a list of movies currently in theaters
-        /// </summary>
-        /// <param name="page_index">Page to return</param>
-        /// <param name="page_limit">Number of items per page</param>
-        /// <returns>MovieSearchResults</returns>
-        public MovieSearchResults GetInTheatersList(int page_index=0, int page_limit=10)
-        {
-            var url = string.Format(MOVIE_LIST_URL + URL_QUERY, "in_theaters", ApiKey, null, page_limit, page_index);
-            var search = Parser.ParseMovieSearchResults(GetJSONString(url));
-
-            if (search.ResultCount == 0) search.ResultCount = search.Count;
-            return search;
-        }
-
-        /// <summary>
-        /// Gets a list of opening movies
+        /// Gets a list of Movies currently in theaters.
         /// </summary>
         /// <returns>MovieSearchResults</returns>
-        public MovieSearchResults GetOpeningMoviesList()
+        public MovieSearchResults FindMoviesInTheaterList()
         {
-            var url = string.Format(MOVIE_LIST_URL, "opening", ApiKey);
-            var search = Parser.ParseMovieSearchResults(GetJSONString(url));
+            var url = string.Format(LIST_IN_THEATERS, ApiKey);
+            string jsonResponse = GetJsonResponse(url);
+            var results = Parser.ParseMovieSearchResults(jsonResponse);
 
-            if (search.ResultCount == 0) search.ResultCount = search.Count;
-            return search;
+            return results;
         }
 
         /// <summary>
-        /// Gets a list of upcoming movies
+        /// Gets a list of opening movies.
         /// </summary>
-        /// <param name="page_index">Page to return</param>
-        /// <param name="page_limit">Number of items per page</param>
         /// <returns>MovieSearchResults</returns>
-        public MovieSearchResults GetUpcomingMoviesList(int page_index = 0, int page_limit = 10)
+        public MovieSearchResults FindOpeningMoviesList()
         {
-            var url = string.Format(MOVIE_LIST_URL + URL_QUERY, "upcoming", ApiKey, null, page_limit, page_index);
-            var search = Parser.ParseMovieSearchResults(GetJSONString(url));
+            var url = string.Format(LIST_OPENING_SOON, ApiKey);
+            var jsonResponse = GetJsonResponse(url);
+            var results = Parser.ParseMovieSearchResults(jsonResponse);
 
-            if (search.ResultCount == 0) search.ResultCount = search.Count;
-            return search;
+            return results;
         }
 
         /// <summary>
-        /// Gets a list of CastMembers by a movie's ID
+        /// Gets a list of upcoming movies.
         /// </summary>
-        /// <param name="movieID">The ID of the movie the cast belongs to</param>
-        /// <returns>IEnumerable list of CastMembers</returns>
-        public IEnumerable<CastMember> GetCastByMovieID(int movieID)
+        /// <returns>MovieSearchResults</returns>
+        public MovieSearchResults FindUpcomingMoviesList()
         {
-            string url = string.Format(MOVIE_ITEMS_URL, movieID, "cast", ApiKey);
-            return Parser.ParseCastMembers(GetJSONString(url));
+            var url = string.Format(LIST_UPCOMING, ApiKey);
+            var jsonResponse = GetJsonResponse(url);
+            var results = Parser.ParseMovieSearchResults(jsonResponse);
+
+            return results;
         }
 
         /// <summary>
-        /// Fetches the JSON string from the input url
+        /// Fetches the JSON string from the URL.
         /// </summary>
-        /// <param name="url">URL to get the JSON string from</param>
+        /// <param name="url">URL to download the JSON from.</param>
         /// <returns>JSON formatted string</returns>
-        private string GetJSONString(string url)
+        private static string GetJsonResponse(string url)
         {
             using (var client = new WebClient())
             {
                 return client.DownloadString(url);
             }
         }
+
+        /// <summary>
+        /// Returns a Movie collection when provided with a set of ID numbers.
+        /// </summary>
+        /// <param name="movieIds">A collection of ints which represent RottenTomatoes ID numbers.</param>
+        /// <returns>A collection of Movie objects.</returns>
+        public List<Movie> FindMovieCollection(IEnumerable<int> movieIds)
+        {
+            return movieIds.Select(id => FindMovieById(id)).ToList();
+        }
+
+        #region API Endpoints
+        //For future reference, this website lists all of the available endpoints:
+        //http://developer.rottentomatoes.com/docs/read/JSON
+
+        /// <summary>
+        /// Endpoint for searching for movies via a text query.
+        /// </summary>
+        private const string MOVIE_SEARCH = @"http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey={0}&q={1}&page_limit={2}";
+
+        /// <summary>
+        /// Endpoint for searching for an individual movie via it's RottenTomatoes ID number.
+        /// </summary>
+        private const string MOVIE_INDIVIDUAL_INFORMATION = @"http://api.rottentomatoes.com/api/public/v1.0/movies/{1}.json?apikey={0}";
+
+        /// <summary>
+        /// Endpoint for searching for reviews for an individual movie.
+        /// </summary>
+        private const string MOVIE_INDIVIDUAL_REVIEWS = @"http://api.rottentomatoes.com/api/public/v1.0/movies/{1}/reviews.json?apikey={0}";
+
+        /// <summary>
+        /// Endpoint for searching for the cast of an individual movie.
+        /// </summary>
+        private const string MOVIE_INDIVIDUAL_CAST = @"http://api.rottentomatoes.com/api/public/v1.0/movies/{1}/cast.json?apikey={0}";
+
+        /// <summary>
+        /// Endpoint for listing the current box office.
+        /// </summary>
+        private const string LIST_BOX_OFFICE = @"http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?apikey={0}";
+
+        /// <summary>
+        /// Endpoint for listing movies that are in theaters.
+        /// </summary>
+        private const string LIST_IN_THEATERS = @"http://api.rottentomatoes.com/api/public/v1.0/lists/movies/in_theaters.json?apikey={0}";
+
+        /// <summary>
+        /// Endpoint for listing opening movies.
+        /// </summary>
+        private const string LIST_OPENING_SOON = @"http://api.rottentomatoes.com/api/public/v1.0/lists/movies/opening.json?apikey={0}";
+
+        /// <summary>
+        /// Endpoint for listing upcoming movies.
+        /// </summary>
+        private const string LIST_UPCOMING = @"http://api.rottentomatoes.com/api/public/v1.0/lists/movies/upcoming.json?apikey={0}";
+        #endregion
     }
 }
