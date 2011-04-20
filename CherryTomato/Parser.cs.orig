@@ -97,7 +97,7 @@ namespace CherryTomato
             var movies = (JArray) jObject["movies"];
             foreach (var movie in movies)
             {
-                Movie result = new Movie();
+                Result result = new Result();
 
                 result.Title = (string)movie["title"];
 
@@ -105,15 +105,21 @@ namespace CherryTomato
                 string idInStringForm = movie["id"].ToString().Substring(1, tmpIdString.Length);
                 result.RottenTomatoesId = Convert.ToInt32(idInStringForm);
                 
+<<<<<<< HEAD
+=======
                 result.Year = (int) movie["year"];
 
                 // Handle the occasional instance where Runtime is not populated
-                int? runtime = !movie["runtime"].HasValues ? null : (int?)movie["runtime"];
+                string runtime = movie["runtime"].ToString().Replace("\"\"", "");
                 if (!string.IsNullOrEmpty(runtime))
                 {
                     result.Runtime = (int?)movie["runtime"];
                 }
+>>>>>>> 603251e... small adjustment to the way null Runtime's are handled in parser.cs
 
+                
+                result.Year = (int) movie["year"];
+                result.Runtime = (int) movie["runtime"];
                 result.Synopsis = (string) movie["synopsis"];
                 
                 var dates = (JObject)movie["release_dates"];
