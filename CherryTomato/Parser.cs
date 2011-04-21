@@ -205,7 +205,8 @@ namespace CherryTomato
 
         private static int? ParseRunTime(JToken jToken)
         {
-            return jToken.Value<int>();
+            if (jToken.ToString().Contains("\"")) return null;
+            return jToken.Value<int?>();
         }
 
         private static string ParseMpaaRating(JToken jToken)

@@ -14,18 +14,59 @@ namespace CherryTomato.Examples
         static void Main(string[] args)
         {
             //Example 1: Finding a movie by it's ID number.
-            FindingMovieByIdNumber();
+            //FindingMovieByIdNumber();
 
 
             //Example 2: Searching for a movie by it's name.
-            FindingMovieByName();
+            //FindingMovieByName();
 
 
             //Example 3: Get the full cast for a movie by the movie id.
-            GetMovieCast();
+            //GetMovieCast();
 
+            
+            //Example 4: Using the Selected Index Changed Event of the MovieSearchResults class
+            MovieSearchResultEventDemonstration();
 
             Console.ReadKey();
+        }
+
+        private static void MovieSearchResultEventDemonstration()
+        {
+            var tomato = new Tomato(ApiKey);
+            var results = tomato.FindMovieByQuery("tank");
+            results.SelectedIndexChanged += new SelectedIndexChangedEventHandler(results_SelectedIndexChanged);
+
+            Console.WriteLine("The Currently Selected Movie: " + results.SelectedValue.Title);
+            Console.WriteLine("The First 5 Cast Members: ");
+            GetTopFiveCastMembers(results.SelectedValue.RottenTomatoesId);
+
+            Console.WriteLine();
+
+            results.SelectedIndex = 3;
+        }
+
+        static void results_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Console.WriteLine("Inside the Index Changed Event\n");
+            var results = sender as MovieSearchResults;
+
+            Console.WriteLine("The New Selected Movie: " + results.SelectedValue.Title);
+            GetTopFiveCastMembers(results.SelectedValue.RottenTomatoesId);
+        }
+
+        private static void GetTopFiveCastMembers(int movieID)
+        {
+            var tomato = new Tomato(ApiKey);
+
+            //Retreive the cast for a movie based on the movie's ID
+            var Cast = tomato.GetFullCastByMovieID(movieID);
+            Console.WriteLine();
+
+            foreach (var member in Cast)
+            {
+                Console.WriteLine("Cast Member: " + member.Name);
+            }
         }
 
         /// <summary>
