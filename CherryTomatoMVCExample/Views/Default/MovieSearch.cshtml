@@ -14,10 +14,11 @@
 </form>   
 
 @if (@Model != null)
-{ 
- @Html.ActionLink("next", "MovieSearch", new { p = "next", title=@Model.SearchQuery, total=@Model.ResultCount })
- @Html.ActionLink("previous", "MovieSearch", new {p="prev", title=@Model.SearchQuery, total=@Model.ResultCount})
-                                                           
+{
+ <h6>Total Results: @Model.ResultCount</h6>
+ @Html.ActionLink("previous", "MovieSearch", new { p = "prev", title = @Model.SearchQuery, total = @Model.ResultCount }, new { style = "margin: 1em;" })
+ @Html.ActionLink("next", "MovieSearch", new { p = "next", title = @Model.SearchQuery, total = @Model.ResultCount }, new { style = "margin: 1em;" })
+                                                       
 <table border="2">
     <tr>
         <th>

@@ -33,7 +33,19 @@ namespace CherryTomatoMVCExample.Controllers
             return View();
         }
 
-     
+
+        public int index
+        {
+            get
+            {
+                object temp = Session["index"];
+                return temp == null ? 1 : (int)temp;
+            }
+            set
+            {
+                Session["index"] = value;
+            }
+        }
         public ActionResult MovieSearch(string title, string p, int? total)
         {
             var tomato = new Tomato(ApiKey);
@@ -41,24 +53,23 @@ namespace CherryTomatoMVCExample.Controllers
 
             if (!string.IsNullOrEmpty(title))
             {
-                int limit = 3;
-                int index = 0;
+                int limit = 5;
 
                 switch (p)
                 {
                     case "next":
-                        if (total > (index * limit))
+                        if (total >= (index * limit))
                             index++;
                         break;
                     case "prev":
-                        if (index > 0)
+                        if (index > 1)
                             index--;
                         break;
                     default:
                         break;
                 }
 
-                results = tomato.FindMovieByQuery(title, limit, index);
+                results = tomato.FindMovieByQuery(query: title, pageLimit: limit, page: index);
             }
             return View("MovieSearch", results);
         }
