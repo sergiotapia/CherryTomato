@@ -16,6 +16,15 @@ namespace CherryTomato.Entities
         }
 
         /// <summary>
+        /// Gets or sets the current movie title query
+        /// </summary>
+        public string SearchQuery
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Total Number Of Results
         /// </summary>
         public int ResultCount { get; set; }
