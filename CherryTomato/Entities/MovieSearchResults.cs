@@ -53,8 +53,11 @@ namespace CherryTomato.Entities
             get { return selectedIndex; } 
             set
             {
-                selectedIndex = value;
-                OnSelectedIndexChanged(EventArgs.Empty);
+                if (selectedIndex != value)
+                {
+                    selectedIndex = value;
+                    OnSelectedIndexChanged(EventArgs.Empty);
+                }
             }
         }
 
