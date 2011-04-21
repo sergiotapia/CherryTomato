@@ -37,7 +37,9 @@ namespace CherryTomato
         {
             var url = String.Format(MOVIE_SEARCH, ApiKey, query, pageLimit, page);
             var jsonResponse = GetJsonResponse(url);
-            return Parser.ParseMovieSearchResults(jsonResponse);
+            var results = Parser.ParseMovieSearchResults(jsonResponse);
+            results.SearchQuery = query;
+            return results;
         }
 
         /// <summary>
