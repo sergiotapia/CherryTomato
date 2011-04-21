@@ -16,7 +16,6 @@ namespace CherryTomato.Examples
             //Example 1: Finding a movie by it's ID number.
             //FindingMovieByIdNumber();
 
-
             //Example 2: Searching for a movie by it's name.
             //FindingMovieByName();
 
@@ -24,11 +23,91 @@ namespace CherryTomato.Examples
             //Example 3: Get the full cast for a movie by the movie id.
             //GetMovieCast();
 
+            //Example 4: Displaying the current box office charts.
+            DisplayCurrentBoxOffice();
+
+            //Example 5: Displaying the current movies in Theaters.
+            DisplayMoviesInTheaters();
+
+            //Example 6: Displaying opening movies.
+            DisplayOpeningMovies();
+
+            //Example 7: Displaying upcoming movies.
+            DisplayUpcomingMovies();
             
-            //Example 4: Using the Selected Index Changed Event of the MovieSearchResults class
+            
+            //Example 8: Using the Selected Index Changed Event of the MovieSearchResults class
             MovieSearchResultEventDemonstration();
 
             Console.ReadKey();
+        }
+
+        private static void DisplayUpcomingMovies()
+        {
+            //A Tomato is the main object that will allow you to access RottenTomatoes information. 
+            //Be sure to provide it with your API key in String format.
+            var tomato = new Tomato(ApiKey);
+
+            //The movies are automatically ordered according to their gross at the box-office.
+            //Unfortunately the JSON API doesn't offer the gross (money earned) only their relative position
+            //on the charts.
+            var movies = tomato.FindUpcomingMoviesList();
+
+            foreach (var movie in movies)
+            {
+                Console.WriteLine(movie.Title);
+            }
+        }
+
+        private static void DisplayOpeningMovies()
+        {
+            //A Tomato is the main object that will allow you to access RottenTomatoes information. 
+            //Be sure to provide it with your API key in String format.
+            var tomato = new Tomato(ApiKey);
+
+            //The movies are automatically ordered according to their gross at the box-office.
+            //Unfortunately the JSON API doesn't offer the gross (money earned) only their relative position
+            //on the charts.
+            var movies = tomato.FindOpeningMoviesList();
+
+            foreach (var movie in movies)
+            {
+                Console.WriteLine(movie.Title);
+            }
+        }
+
+        private static void DisplayMoviesInTheaters()
+        {
+            //A Tomato is the main object that will allow you to access RottenTomatoes information. 
+            //Be sure to provide it with your API key in String format.
+            var tomato = new Tomato(ApiKey);
+
+            //The movies are automatically ordered according to their gross at the box-office.
+            //Unfortunately the JSON API doesn't offer the gross (money earned) only their relative position
+            //on the charts.
+            var movies = tomato.FindMoviesInTheaterList();
+
+            foreach (var movie in movies)
+            {
+                Console.WriteLine(movie.Title);
+            }
+        }
+
+        private static void DisplayCurrentBoxOffice()
+        {
+            //A Tomato is the main object that will allow you to access RottenTomatoes information. 
+            //Be sure to provide it with your API key in String format.
+            var tomato = new Tomato(ApiKey);
+
+            //The movies are automatically ordered according to their gross at the box-office.
+            //Unfortunately the JSON API doesn't offer the gross (money earned) only their relative position
+            //on the charts.
+            var movies = tomato.FindBoxOfficeList();
+
+            foreach (var movie in movies)
+            {
+                Console.WriteLine(movie.Title);
+            }
         }
 
         private static void MovieSearchResultEventDemonstration()
