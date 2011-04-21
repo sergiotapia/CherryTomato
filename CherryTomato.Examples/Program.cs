@@ -14,7 +14,6 @@ namespace CherryTomato.Examples
             //Example 1: Finding a movie by it's ID number.
             FindingMovieByIdNumber();
 
-
             //Example 2: Searching for a movie by it's name.
             FindingMovieByName();
 
