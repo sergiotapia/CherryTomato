@@ -60,7 +60,7 @@ namespace CherryTomato.Examples
             var tomato = new Tomato(ApiKey);
 
             //Retreive the cast for a movie based on the movie's ID
-            var Cast = tomato.GetFullCastByMovieID(movieID);
+            var Cast = tomato.GetFullCastByMovieID(movieID).Take(5);
             Console.WriteLine();
 
             foreach (var member in Cast)
