@@ -1,0 +1,56 @@
+﻿@model CherryTomato.Entities.MovieSearchResults
+
+@{
+    ViewBag.Title = "Movie Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Movie Search</h2>
+
+
+<form action="" method="post">
+<input type="text" name="title" value="" />
+<input type="submit" name="btnSubmit" value="Search" />
+</form>   
+
+@if (@Model != null)
+{ 
+ @Html.ActionLink("next", "MovieSearch", new { p = "next", title=@Model.SearchQuery, total=@Model.ResultCount })
+ @Html.ActionLink("previous", "MovieSearch", new {p="prev", title=@Model.SearchQuery, total=@Model.ResultCount})
+                                                           
+<table border="2">
+    <tr>
+        <th>
+            Title
+        </th>
+        <th>
+            Movie Poster
+        </th>
+        <th>
+            Rating
+        </th>
+        <th>
+            Run Time
+        </th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @item.Title
+        </td>
+        <td>
+            <img src="@item.Posters.Where(p => p.Type == "thumbnail").First().Url" alt="poster thumbnail" width="61" height="91" />
+        </td>
+        <td>
+            @item.Ratings.First().Score
+        </td>
+        <td>
+            @item.Runtime
+        </td>
+    </tr>
+}
+
+</table>
+}
