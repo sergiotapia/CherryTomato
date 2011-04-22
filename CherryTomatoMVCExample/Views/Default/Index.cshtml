@@ -1,19 +1,21 @@
-﻿@model CherryTomato.Entities.Movie
-
-@{
+﻿@{
     if (Model != null)
     {
         ViewBag.Title = Model.Title;
     }
     else
     {
-        ViewBag.Title = "Movie Information";
+        ViewBag.Title = "Welcome to CherryTomato";
     }
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
-<h1 style="width: 40%; margin: 1em auto; background-color: #baf0f2; text-align: center">@ViewBag.Title</h1>
+<h3 style="width: 80%; margin: .5em auto; text-align: left;">What is CherryTomato?</h3>
+<p style="width: 80%; margin: 0 auto; line-height: 2em;">CherryTomato is a library created sing C# to provide an easy method to interact with the
+JSON api provided by <a href="http://RottenTomatoes.com">RottenTomatoes</a>. The library does the heavy lifting of <b>fetching</b>
+and <b>parsing</b> the JSON formatted movie information from the RottenTomatoes website so you all you need to concentrate on is how
+to implement the data into your project.</p>
 
 @if (@Model != null)
 {

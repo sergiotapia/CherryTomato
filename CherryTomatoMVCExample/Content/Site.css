@@ -1,9 +1,9 @@
 body
 {
-    font-size: 75%;
-    font-family: Verdana, Tahoma, Arial, "Helvetica Neue", Helvetica, Sans-Serif;
-    color: #232323;
-    background-color: #fff;
+	font-size: 75%;
+	font-family: Verdana, Tahoma, Arial, "Helvetica Neue" , Helvetica, Sans-Serif;
+	color: #232323;
+	background-color: #FDEDD0;
 }
 
 /* Styles for basic forms
@@ -65,4 +65,86 @@ textarea
 .validation-summary-valid
 {
     display: none;
+}
+
+#navigation ul
+{
+	width: 85%;
+	margin: .5em auto 0 auto;
+	border-bottom: 1px solid red;
+	height: 3em;
+}
+
+#navigation ul li
+{	
+	display: block;
+	float: left;
+	text-align: center;
+	margin: 0;
+	font-weight: bold;
+}
+
+#navigation ul li a
+{
+	display: inline-block;
+	width: 7em;
+	color: #fff;
+	padding: .5em 1.5em;	
+	text-decoration: none;
+	background-color: #d0b080;
+	color: #fff;
+	margin: 0 .2em;
+	border-top: solid 1px #FDEDD0;
+	border-bottom: solid 1px #FDEDD0;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+#navigation ul li a:hover
+{
+	background-color: #e0d0a0;
+}
+
+#page
+{
+	max-width: 80%;
+	min-width: 400px;
+	border-left: 1px solid gray;
+	border-right: 1px solid gray;
+	margin: 0 auto;
+	padding: 1.5em;
+	background-color: White;
+	min-height: 45em;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+	
+}
+
+#Title
+{
+	font-family: Verdana;
+	font-weight: bold;
+	font-size: 40px;
+	margin: .5em;
+	color: #FF634D;
+}
+
+#SubTitle
+{
+	font-weight: bold;
+	font-size: 20px;
+	margin: 0;	
+}
+
+
+#TomatoImg
+{
+	position: relative;
+	float: left;
+	top: -30px;
+	left: -40px;
+	z-index: 100;
+	margin: 0;
+	padding: 0;
+	height: 100px;
 }
