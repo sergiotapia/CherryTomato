@@ -125,7 +125,7 @@ textarea
 	font-family: Verdana;
 	font-weight: bold;
 	font-size: 40px;
-	margin: .5em;
+	margin-left: 1.3em;
 	color: #FF634D;
 }
 
@@ -133,7 +133,7 @@ textarea
 {
 	font-weight: bold;
 	font-size: 20px;
-	margin: 0;	
+	margin: 0 auto;	
 }
 
 
@@ -141,7 +141,7 @@ textarea
 {
 	position: relative;
 	float: left;
-	top: -30px;
+	top: -75px;
 	left: -40px;
 	z-index: 100;
 	margin: 0;
