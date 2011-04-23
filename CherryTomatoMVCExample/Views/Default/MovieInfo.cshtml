@@ -1,0 +1,39 @@
+﻿@model CherryTomato.Entities.Movie
+
+@{
+    ViewBag.Title = "MovieInfo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<fieldset>
+    <legend>@Model.Title</legend>
+
+    <div class="MovieInfoContainer">
+        <div class="display-label">Year:</div>
+        <div class="display-field">@Model.Year</div>
+
+        <div class="display-label">MpaaRating:</div>
+        <div class="display-field">@Model.MpaaRating</div>
+
+        <div class="display-label">Runtime:</div>
+        <div class="display-field">@Model.Runtime</div>
+
+        @foreach (var item in @Model.Genres)
+        {
+            <div style="float: left; width: 100%;">
+                <span class="display-label">Genre:</span>
+                <span class="display-field">@item</span>
+            </div>
+        }
+
+        <div class="display-label">Synopsis:</div>
+        <div class="display-field">@Model.Synopsis</div>
+    </div>
+    <div class="MovieInfoImgContainer">
+        <img src="@Model.Posters[1].Url" alt="@Model.Title" class="MovieInfoImg" />
+    </div>
+</fieldset>
+<p style="width: 50%; margin: 1em auto">
+    @Html.ActionLink("Back to Search", "MovieSearch", new { title = @Request["title"] })
+</p>
+

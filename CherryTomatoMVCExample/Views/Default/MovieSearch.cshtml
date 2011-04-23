@@ -3,10 +3,9 @@
 @{
     ViewBag.Title = "Movie Search";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var grid = new WebGrid(@Model, ajaxUpdateContainerId: "Results");
 }
-
-<h2 style="margin: 0 auto .7em auto;">Movie Search By Title</h2>
-
+<div id="Results">
 <form action="" method="post">
 <input type="text" name="title" value="" />
 <input type="submit" name="btnSubmit" value="Search" />
@@ -15,42 +14,22 @@
 @if (@Model != null)
 {
  <h6>Total Results: @Model.ResultCount</h6>
+    <div style="margin: 1em; width: 20em;">
  @Html.ActionLink("previous", "MovieSearch", new { p = "prev", title = @Model.SearchQuery, total = @Model.ResultCount }, new { style = "margin: 1em;" })
  @Html.ActionLink("next", "MovieSearch", new { p = "next", title = @Model.SearchQuery, total = @Model.ResultCount }, new { style = "margin: 1em;" })
-                                                       
-<table border="2">
-    <tr>
-        <th>
-            Title
-        </th>
-        <th>
-            Movie Poster
-        </th>
-        <th>
-            Rating
-        </th>
-        <th>
-            Run Time
-        </th>
-    </tr>
-
-@foreach (var item in Model)
-{
-    <tr>
-        <td>
-            @item.Title
-        </td>
-        <td>
-            <img src="@item.Posters.Where(p => p.Type == "thumbnail").First().Url" alt="poster thumbnail" width="61" height="91" />
-        </td>
-        <td>
-            @item.Ratings.First().Score
-        </td>
-        <td>
-            @item.Runtime
-        </td>
-    </tr>
+    </div>
+    
+        @grid.GetHtml(
+            tableStyle: "MovieSearchTable",
+            rowStyle: "MovieSearchRow",
+            alternatingRowStyle: "MovieSearchAlt",        
+            columns:grid.Columns(
+                grid.Column("title", "Title", format: @<text><a href='@Href("~/Default/MovieInfo?id=" + @item.RottenTomatoesId + "&title=" +  @Request["title"])' style="vertical-align: middle; display: block; height: 3em; width: 20em;">@item.Title</a></text>),
+                        grid.Column("runtime", "Run Time"),
+                        grid.Column("year", "Year"),
+                        grid.Column("posters", "Poster", @<text><img src='@item.Posters[0].Url' width="61" height="91" alt="Alternate Text" /></text>)
+                )
+            )
+                                 
 }
-
-</table>
-}
+</div>

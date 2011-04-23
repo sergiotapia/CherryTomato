@@ -81,7 +81,8 @@ textarea
 	float: left;
 	text-align: center;
 	margin: 0;
-	font-weight: bold;
+	font-weight: bold;	
+	border-radius: 10px;
 }
 
 #navigation ul li a
@@ -98,6 +99,7 @@ textarea
 	border-bottom: solid 1px #FDEDD0;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
+	box-shadow: 1px 1px 1px gray;
 }
 
 #navigation ul li a:hover
@@ -108,7 +110,7 @@ textarea
 #page
 {
 	max-width: 80%;
-	min-width: 400px;
+	width: 80em;
 	border-left: 1px solid gray;
 	border-right: 1px solid gray;
 	margin: 0 auto;
@@ -147,4 +149,63 @@ textarea
 	margin: 0;
 	padding: 0;
 	height: 100px;
+}
+
+.MovieSearchTable td
+{
+	border: 1px solid gray;
+	margin: 0;
+	padding: 1em;
+}
+
+.MovieSearchRow
+{
+	padding: 0;
+	margin: 0;
+}
+
+.MovieSearchAlt
+{
+	background-color: #Ffffef;
+}
+
+.display-label
+{
+	font-weight: bold;
+	padding: .5em;
+	margin: .1em 0;
+	width: 25%;
+	float: left;
+	background-color: tan;
+	color: White;
+}
+
+.display-field
+{
+	color: Red;	
+	margin: .1em 0;
+	width: 66%;
+	padding: .5em;
+	float: right;
+	max-height: 10em;
+	overflow: auto;
+}
+
+.MovieInfoContainer
+{
+	width: 70%;
+	float: left;	
+}
+
+.MovieInfoImgContainer
+{
+	float: right;
+	box-shadow: 5px 5px 5px gray;
+}
+
+fieldset
+{
+	padding: 2em; 
+	width: 80%; 
+	margin: 0 auto;
 }

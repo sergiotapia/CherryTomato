@@ -25,6 +25,17 @@ namespace CherryTomato.Entities
         }
 
         /// <summary>
+        /// gets more detailed data on the selected movie than is available using movie search
+        /// </summary>
+        /// <param name="ApiKey">Your RottenTomatoes Api Key</param>
+        /// <returns>Detailed Movie Info</returns>
+        public Movie GetSelectedMovieDetailedInfo(string ApiKey)
+        {
+            var tomato = new Tomato(ApiKey);
+            return tomato.FindMovieById(this.SelectedValue.RottenTomatoesId);
+        }
+
+        /// <summary>
         /// Total Number Of Results
         /// </summary>
         public int ResultCount { get; set; }

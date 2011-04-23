@@ -46,6 +46,8 @@ namespace CherryTomatoMVCExample.Controllers
                 Session["index"] = value;
             }
         }
+        
+        
         public ActionResult MovieSearch(string title, string p, int? total)
         {
             var tomato = new Tomato(ApiKey);
@@ -72,6 +74,22 @@ namespace CherryTomatoMVCExample.Controllers
                 results = tomato.FindMovieByQuery(query: title, pageLimit: limit, page: index);
             }
             return View("MovieSearch", results);
+        }
+
+
+        public ActionResult MovieInfo(int? id, string query)
+        {
+            if (id.HasValue)
+            {
+                var tomato = new Tomato(ApiKey);
+                var movie = tomato.FindMovieById(id.Value);
+
+                return View("MovieInfo", movie);
+            }
+            else
+            {
+               return Redirect("Index");
+            }
         }
     }
 }

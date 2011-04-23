@@ -24,16 +24,16 @@ namespace CherryTomato.Examples
             //GetMovieCast();
 
             //Example 4: Displaying the current box office charts.
-            DisplayCurrentBoxOffice();
+            //DisplayCurrentBoxOffice();
 
             //Example 5: Displaying the current movies in Theaters.
-            DisplayMoviesInTheaters();
+            //DisplayMoviesInTheaters();
 
             //Example 6: Displaying opening movies.
-            DisplayOpeningMovies();
+            //DisplayOpeningMovies();
 
             //Example 7: Displaying upcoming movies.
-            DisplayUpcomingMovies();
+            //DisplayUpcomingMovies();
             
             
             //Example 8: Using the Selected Index Changed Event of the MovieSearchResults class
@@ -113,7 +113,7 @@ namespace CherryTomato.Examples
         private static void MovieSearchResultEventDemonstration()
         {
             var tomato = new Tomato(ApiKey);
-            var results = tomato.FindMovieByQuery("tank");
+            var results = tomato.FindMovieByQuery("harlem");
             results.SelectedIndexChanged += new SelectedIndexChangedEventHandler(results_SelectedIndexChanged);
 
             Console.WriteLine("The Currently Selected Movie: " + results.SelectedValue.Title);
@@ -122,7 +122,7 @@ namespace CherryTomato.Examples
 
             Console.WriteLine();
 
-            results.SelectedIndex = 3;
+            results.SelectedIndex = 0;
         }
 
         static void results_SelectedIndexChanged(object sender, EventArgs e)
@@ -132,6 +132,28 @@ namespace CherryTomato.Examples
 
             Console.WriteLine("The New Selected Movie: " + results.SelectedValue.Title);
             GetTopFiveCastMembers(results.SelectedValue.RottenTomatoesId);
+
+            Console.WriteLine();
+            Console.WriteLine("Getting Detailed Info On " + results.SelectedValue.Title);
+            Console.WriteLine();
+
+            Movie movie = results.GetSelectedMovieDetailedInfo(ApiKey);
+            Console.WriteLine("Title: " + movie.Title);
+            Console.WriteLine("Year :" + movie.Year);
+            Console.WriteLine("Synopsis: " + movie.Synopsis);
+            
+            movie.Genres.ForEach(g =>
+            {
+                Console.WriteLine("Genres: " + g);
+            });
+
+            movie.Directors.ForEach(d => { Console.WriteLine("Directors :" + d); });
+
+            movie.Cast.ForEach(c =>
+            {
+                Console.WriteLine("Cast: " + c.Name);
+                c.Characters.ForEach(ch => { Console.WriteLine("Characters: " + ch); });
+            });
         }
 
         private static void GetTopFiveCastMembers(int movieID)

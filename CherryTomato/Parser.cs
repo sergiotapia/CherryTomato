@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using CherryTomato.Entities;
 using Newtonsoft.Json.Linq;
-using System.Diagnostics;
 
 namespace CherryTomato
 {
