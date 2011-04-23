@@ -23,8 +23,27 @@ namespace CherryTomato
         public Movie FindMovieById(int movieId)
         {
             var url = String.Format(MOVIE_INDIVIDUAL_INFORMATION, ApiKey, movieId);
+            return GetMovieInfoByUrl(url);
+        }
+
+        /// <summary>
+        /// Returns a movie object retrieved from the input Url string.
+        /// This is used to return the movie data for the Link items in the Movie class.
+        /// </summary>
+        /// <param name="url">The url of the Movie object</param>
+        /// <returns>Movie data</returns>
+        public Movie GetMovieInfoByUrl(string url)
+        {
             var jsonResponse = GetJsonResponse(url);
-            return Parser.ParseMovie(jsonResponse);
+            var movie = Parser.ParseMovie(jsonResponse);
+
+            // The Api Key has to be appended to each link for them to work
+            foreach (var link in movie.Links)
+            {
+                link.Url = link.Url + "?apikey=" + ApiKey;
+            }
+
+            return movie;
         }
 
         /// <summary>

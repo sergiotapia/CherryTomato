@@ -24,6 +24,7 @@ namespace CherryTomato.Entities
             set;
         }
 
+
         /// <summary>
         /// gets more detailed data on the selected movie than is available using movie search
         /// </summary>

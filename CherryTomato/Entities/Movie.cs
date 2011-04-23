@@ -17,7 +17,7 @@ namespace CherryTomato.Entities
         public List<string> Directors { get; set; }
         public List<CastMember> Cast { get; set; }
         public List<Link> Links { get; set; }
-        public List<Poster> Posters { get; set; }
+        public PosterCollection Posters { get; set; }
 
         public Movie()
         {
@@ -25,7 +25,7 @@ namespace CherryTomato.Entities
             Genres = new List<string>();
             Cast = new List<CastMember>();
             Links = new List<Link>();
-            Posters = new List<Poster>();
+            Posters = new PosterCollection();
             ReleaseDates = new List<ReleaseDate>();
             Ratings = new List<Rating>();
         }
@@ -44,40 +44,5 @@ namespace CherryTomato.Entities
         }
 
         #endregion
-    }
-
-    public class ReleaseDate
-    {
-        public string Type { get; set; }
-        public DateTime Date { get; set; }
-    }
-
-    public class CastMember
-    {
-        public string Name { get; set; }
-        public List<string> Characters { get; set; }
-
-        public CastMember()
-        {
-            Characters = new List<string>();
-        }
-    }
-
-    public class Link
-    {
-        public string Type { get; set; }
-        public string Url { get; set; }
-    }
-
-    public class Poster
-    {
-        public string Type { get; set; }
-        public string Url { get; set; }
-    }
-
-    public class Rating
-    {
-        public string Type { get; set; }
-        public int Score { get; set; }
     }
 }

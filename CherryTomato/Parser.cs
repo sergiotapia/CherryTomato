@@ -110,9 +110,9 @@ namespace CherryTomato
             return ratings;
         }
 
-        private static List<Poster> ParsePosters(JToken jToken)
+        private static PosterCollection ParsePosters(JToken jToken)
         {
-            List<Poster> posters = new List<Poster>();
+            PosterCollection posters = new PosterCollection();
             var jsonArray = (JObject)jToken;
 
             if (jsonArray == null)
