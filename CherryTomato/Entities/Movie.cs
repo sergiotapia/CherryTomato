@@ -16,7 +16,7 @@ namespace CherryTomato.Entities
         public List<string> Genres { get; set; }
         public List<string> Directors { get; set; }
         public List<CastMember> Cast { get; set; }
-        public List<Link> Links { get; set; }
+        public MovieLinkCollection Links { get; set; }
         public PosterCollection Posters { get; set; }
 
         public Movie()
@@ -24,7 +24,7 @@ namespace CherryTomato.Entities
             Directors = new List<string>();
             Genres = new List<string>();
             Cast = new List<CastMember>();
-            Links = new List<Link>();
+            Links = new MovieLinkCollection();
             Posters = new PosterCollection();
             ReleaseDates = new List<ReleaseDate>();
             Ratings = new List<Rating>();

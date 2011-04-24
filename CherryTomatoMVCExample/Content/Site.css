@@ -155,7 +155,7 @@ textarea
 {
 	border: 1px solid gray;
 	margin: 0;
-	padding: 1em;
+	padding: .3em;
 }
 
 .MovieSearchRow
@@ -193,19 +193,35 @@ textarea
 
 .MovieInfoContainer
 {
-	width: 70%;
+	width: 72%;
 	float: left;	
 }
 
 .MovieInfoImgContainer
 {
 	float: right;
-	box-shadow: 5px 5px 5px gray;
+	box-shadow: 0 0 3px 3px gray;
 }
 
-fieldset
+.fieldset
 {
-	padding: 2em; 
-	width: 80%; 
+	padding: .85em; 
+	width: 90%; 
 	margin: 0 auto;
+	background-color: #cfdfef;
+	border: 1px solid gray;
+	height: 35em;	
+	border-radius: 5px;
+}
+
+.fieldset_container
+{
+	padding: .5em;
+	background-color: White;
+	box-shadow: 0 0 3px 3px gray;
+	border-radius: 5px;
+	margin: 0 auto;
+	width: 90%;
+	height: 80%;
+	overflow: auto;
 }

@@ -113,7 +113,7 @@ namespace CherryTomato.Examples
         private static void MovieSearchResultEventDemonstration()
         {
             var tomato = new Tomato(ApiKey);
-            var results = tomato.FindMovieByQuery("harlem");
+            var results = tomato.FindMoviesByQuery("harlem");
             results.SelectedIndexChanged += new SelectedIndexChangedEventHandler(results_SelectedIndexChanged);
 
             Console.WriteLine("The Currently Selected Movie: " + results.SelectedValue.Title);
@@ -194,7 +194,7 @@ namespace CherryTomato.Examples
             //Be sure to provide it with your API key in String format.
             var tomato = new Tomato(ApiKey);
 
-            var results = tomato.FindMovieByQuery("The Incredible Hulk");
+            var results = tomato.FindMoviesByQuery("The Incredible Hulk");
             foreach (var movieSearchResult in results)
             {
                 Console.WriteLine(movieSearchResult.Title);

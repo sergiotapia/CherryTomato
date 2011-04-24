@@ -11,69 +11,61 @@ namespace CherryTomatoMVCExample.Controllers
 {
     public class DefaultController : Controller
     {
-        // GET: /Default1/
-        private string ApiKey = ConfigurationManager.AppSettings["ApiKey"];
-
-        public ActionResult Index(int? id)
-        {
-            var tomato = new Tomato(ApiKey);
-            Movie movie = null;
-            
-            if (id.HasValue) 
-                movie = tomato.FindMovieById(id.Value);
-
-            return View("Index", movie);
-        }
-
-        //
-        // GET: /Default1/Details/5
-
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-
-        public int index
+        public MovieSearchResults Results
         {
             get
             {
-                object temp = Session["index"];
-                return temp == null ? 1 : (int)temp;
+                object temp = Session["Results"];
+                return temp == null ? null : (MovieSearchResults)temp;
             }
-            set
+            set { Session["Results"] = value; }
+        }
+
+        // GET: /Default1/
+        private string ApiKey = ConfigurationManager.AppSettings["ApiKey"];
+
+        private Tomato _tomato;
+        public Tomato tomato
+        {
+            get
             {
-                Session["index"] = value;
+                if (_tomato == null) _tomato = new Tomato(ApiKey);
+                return _tomato;
             }
+        }
+
+
+        public ActionResult Index()
+        {
+            return View("Index");
         }
         
         
         public ActionResult MovieSearch(string title, string p, int? total)
         {
-            var tomato = new Tomato(ApiKey);
-            MovieSearchResults results = null;
+            int limit = 5;
 
-            if (!string.IsNullOrEmpty(title))
+            if (!string.IsNullOrEmpty(p))
             {
-                int limit = 5;
-
                 switch (p)
                 {
                     case "next":
-                        if (total >= (index * limit))
-                            index++;
+                        Results = tomato.FindMoviesByUrl(Results.Links.Next);
                         break;
                     case "prev":
-                        if (index > 1)
-                            index--;
+                        Results = tomato.FindMoviesByUrl(Results.Links.Previous);
                         break;
                     default:
+                        Results = null;
                         break;
                 }
-
-                results = tomato.FindMovieByQuery(query: title, pageLimit: limit, page: index);
             }
-            return View("MovieSearch", results);
+            
+            else if (!string.IsNullOrEmpty(title) && p == null)
+            {
+                Results = tomato.FindMoviesByQuery(query: title, pageLimit: limit, page: 1);
+            }
+            return View("MovieSearch", Results);
         }
 
 

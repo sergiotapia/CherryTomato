@@ -27,7 +27,7 @@ namespace CherryTomato
             movie.Directors = ParseDirectors(jObject["abridged_directors"]);
             movie.Genres = ParseGenres(jObject["genres"]);
             movie.Cast = ParseCastMembers(jObject["abridged_cast"]);
-            movie.Links = ParseLinks(jObject["links"]);
+            movie.Links = ParseMovieLinks(jObject["links"]);
             movie.Posters = ParsePosters(jObject["posters"]);
             movie.Ratings = ParseRatings(jObject["ratings"]);
             movie.ReleaseDates = ParseReleaseDates(jObject["release_dates"]);
@@ -66,6 +66,8 @@ namespace CherryTomato
                     result.Add(m);
                 }
             }
+
+            result.Links = ParseMovieSearchLinks(jObject["links"]);
 
             return result;
         }
@@ -127,9 +129,9 @@ namespace CherryTomato
             return posters;
         }
 
-        private static List<Link> ParseLinks(JToken jToken)
+        private static MovieLinkCollection ParseMovieLinks(JToken jToken)
         {
-            List<Link> links = new List<Link>();
+            var links = new MovieLinkCollection();
             var jsonArray = (JObject) jToken;
 
             if (jsonArray == null)
@@ -138,6 +140,23 @@ namespace CherryTomato
             foreach (var link in jsonArray)
             {
                 Link newLink = new Link {Type = (string) link.Key, Url = (string) link.Value};
+                links.Add(newLink);
+            }
+
+            return links;
+        }
+
+        private static MovieSearchLinkCollection ParseMovieSearchLinks(JToken jToken)
+        {
+            var links = new MovieSearchLinkCollection();
+            var jsonArray = (JObject)jToken;
+
+            if (jsonArray == null)
+                return links;
+
+            foreach (var link in jsonArray)
+            {
+                Link newLink = new Link { Type = (string)link.Key, Url = (string)link.Value };
                 links.Add(newLink);
             }
 

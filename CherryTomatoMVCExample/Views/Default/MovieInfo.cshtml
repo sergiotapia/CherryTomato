@@ -5,34 +5,36 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<fieldset>
-    <legend>@Model.Title</legend>
+<div class="fieldset">
+    <h2 style="color: #FF634D; margin: 0 auto .7em auto; width: 100%;">@Model.Title</h2>
+    
+    <div class="fieldset_container">
+        <div class="MovieInfoContainer">
+            <div class="display-label">Year:</div>
+            <div class="display-field">@Model.Year</div>
 
-    <div class="MovieInfoContainer">
-        <div class="display-label">Year:</div>
-        <div class="display-field">@Model.Year</div>
+            <div class="display-label">MpaaRating:</div>
+            <div class="display-field">@Model.MpaaRating</div>
 
-        <div class="display-label">MpaaRating:</div>
-        <div class="display-field">@Model.MpaaRating</div>
+            <div class="display-label">Runtime:</div>
+            <div class="display-field">@Model.Runtime</div>
 
-        <div class="display-label">Runtime:</div>
-        <div class="display-field">@Model.Runtime</div>
+            @foreach (var item in @Model.Genres)
+            {
+                <div style="float: left; width: 100%;">
+                    <span class="display-label">Genre:</span>
+                    <span class="display-field">@item</span>
+                </div>
+            }
 
-        @foreach (var item in @Model.Genres)
-        {
-            <div style="float: left; width: 100%;">
-                <span class="display-label">Genre:</span>
-                <span class="display-field">@item</span>
-            </div>
-        }
-
-        <div class="display-label">Synopsis:</div>
-        <div class="display-field">@Model.Synopsis</div>
+            <div class="display-label">Synopsis:</div>
+            <div class="display-field">@Model.Synopsis</div>
+        </div>
+        <div class="MovieInfoImgContainer">
+            <img src="@Model.Posters.ProfilePoster" alt="@Model.Title" class="MovieInfoImg" />
+        </div>
     </div>
-    <div class="MovieInfoImgContainer">
-        <img src="@Model.Posters.Profile" alt="@Model.Title" class="MovieInfoImg" />
-    </div>
-</fieldset>
+</div>
 <p style="width: 50%; margin: 1em auto">
     @Html.ActionLink("Back to Search", "MovieSearch", new { title = @Request["title"] })
 </p>

@@ -23,7 +23,14 @@ namespace CherryTomato
         public Movie FindMovieById(int movieId)
         {
             var url = String.Format(MOVIE_INDIVIDUAL_INFORMATION, ApiKey, movieId);
-            return GetMovieInfoByUrl(url);
+            var movie = GetMovieInfoByUrl(url);
+
+            foreach (var link in movie.Links)
+            {
+                link.Url = link.Url + "?apikey=" + ApiKey;
+            }
+
+            return movie;
         }
 
         /// <summary>
@@ -52,13 +59,29 @@ namespace CherryTomato
         /// <param name="query">Search term</param>
         /// <param name="pageLimit">Amount of result pages to load</param>
         /// <returns>MovieSearchResults object</returns>
-        public MovieSearchResults FindMovieByQuery(string query, int pageLimit = 10, int page=0)
+        public MovieSearchResults FindMoviesByQuery(string query, int pageLimit = 10, int page=0)
         {
             var url = String.Format(MOVIE_SEARCH, ApiKey, query, pageLimit, page);
             var jsonResponse = GetJsonResponse(url);
-            var results = Parser.ParseMovieSearchResults(jsonResponse);
-            results.SearchQuery = query;
+            var results = GetMovieSearchResults(jsonResponse);
             return results;
+        }
+
+        /// <summary>
+        /// Returns a MovieSearchResults object with the amount of results found and the results.
+        /// </summary>
+        /// <param name="query">Search url</param>
+        /// <param name="pageLimit">Amount of result pages to load</param>
+        /// <returns>MovieSearchResults object</returns>
+        public MovieSearchResults FindMoviesByUrl(string url)
+        {
+            if (!string.IsNullOrEmpty(url))
+            {
+                var jsonResponse = GetJsonResponse(url);
+                var results = GetMovieSearchResults(jsonResponse);
+                return results;
+            }
+            else return null;
         }
 
         /// <summary>
@@ -69,9 +92,7 @@ namespace CherryTomato
         {
             var url = string.Format(LIST_BOX_OFFICE, ApiKey);
             string jsonResponse = GetJsonResponse(url);
-            var results = Parser.ParseMovieSearchResults(jsonResponse);
-
-            return results;
+            return GetMovieSearchResults(jsonResponse);
         }
 
         /// <summary>
@@ -82,9 +103,7 @@ namespace CherryTomato
         {
             var url = string.Format(LIST_IN_THEATERS, ApiKey);
             string jsonResponse = GetJsonResponse(url);
-            var results = Parser.ParseMovieSearchResults(jsonResponse);
-
-            return results;
+            return GetMovieSearchResults(jsonResponse);
         }
 
         /// <summary>
@@ -95,7 +114,17 @@ namespace CherryTomato
         {
             var url = string.Format(LIST_OPENING_SOON, ApiKey);
             var jsonResponse = GetJsonResponse(url);
+            return GetMovieSearchResults(jsonResponse);
+        }
+
+        private MovieSearchResults GetMovieSearchResults(string jsonResponse)
+        {
             var results = Parser.ParseMovieSearchResults(jsonResponse);
+
+            foreach (var link in results.Links)
+            {
+                link.Url = link.Url + "&apikey=" + ApiKey;
+            }
 
             return results;
         }
@@ -108,9 +137,7 @@ namespace CherryTomato
         {
             var url = string.Format(LIST_UPCOMING, ApiKey);
             var jsonResponse = GetJsonResponse(url);
-            var results = Parser.ParseMovieSearchResults(jsonResponse);
-
-            return results;
+            return GetMovieSearchResults(jsonResponse);
         }
 
 

@@ -54,6 +54,7 @@ namespace CherryTomato.Entities
             ResultCount = 0;
             Movies = new List<Movie>();
             selectedIndex = 0;
+            Links = new MovieSearchLinkCollection();
         }
 
         /// <summary>
@@ -80,6 +81,9 @@ namespace CherryTomato.Entities
         {
             get { return Movies.ElementAt(SelectedIndex); } 
         }
+
+
+        public MovieSearchLinkCollection Links { get; set; }
 
         #region LIST METHODS
         /// <summary>
