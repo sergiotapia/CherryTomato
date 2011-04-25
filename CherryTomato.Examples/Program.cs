@@ -24,20 +24,20 @@ namespace CherryTomato.Examples
             //GetMovieCast();
 
             //Example 4: Displaying the current box office charts.
-            //DisplayCurrentBoxOffice();
+            DisplayCurrentBoxOffice();
 
             //Example 5: Displaying the current movies in Theaters.
-            //DisplayMoviesInTheaters();
+            DisplayMoviesInTheaters();
 
             //Example 6: Displaying opening movies.
-            //DisplayOpeningMovies();
+            DisplayOpeningMovies();
 
             //Example 7: Displaying upcoming movies.
-            //DisplayUpcomingMovies();
+            DisplayUpcomingMovies();
             
             
             //Example 8: Using the Selected Index Changed Event of the MovieSearchResults class
-            MovieSearchResultEventDemonstration();
+            //MovieSearchResultEventDemonstration();
 
             Console.ReadKey();
         }
@@ -113,7 +113,8 @@ namespace CherryTomato.Examples
         private static void MovieSearchResultEventDemonstration()
         {
             var tomato = new Tomato(ApiKey);
-            var results = tomato.FindMoviesByQuery("harlem");
+            var results = tomato.FindMoviesByQuery("harlem");;
+
             results.SelectedIndexChanged += new SelectedIndexChangedEventHandler(results_SelectedIndexChanged);
 
             Console.WriteLine("The Currently Selected Movie: " + results.SelectedValue.Title);
@@ -137,7 +138,7 @@ namespace CherryTomato.Examples
             Console.WriteLine("Getting Detailed Info On " + results.SelectedValue.Title);
             Console.WriteLine();
 
-            Movie movie = results.GetSelectedMovieDetailedInfo(ApiKey);
+            Movie movie = results.SelectedValue;
             Console.WriteLine("Title: " + movie.Title);
             Console.WriteLine("Year :" + movie.Year);
             Console.WriteLine("Synopsis: " + movie.Synopsis);

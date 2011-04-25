@@ -8,33 +8,11 @@ namespace CherryTomato.Entities
 
     public class MovieSearchResults : ICollection<Movie>
     {
-        public event SelectedIndexChangedEventHandler SelectedIndexChanged;
-        public virtual void OnSelectedIndexChanged(EventArgs e)
-        {
-            if (SelectedIndexChanged != null)
-                SelectedIndexChanged(this, e);
-        }
-
+        #region Public Properties
         /// <summary>
-        /// Gets or sets the current movie title query
+        /// Search Query used to obtain movie results
         /// </summary>
-        public string SearchQuery
-        {
-            get;
-            set;
-        }
-
-
-        /// <summary>
-        /// gets more detailed data on the selected movie than is available using movie search
-        /// </summary>
-        /// <param name="ApiKey">Your RottenTomatoes Api Key</param>
-        /// <returns>Detailed Movie Info</returns>
-        public Movie GetSelectedMovieDetailedInfo(string ApiKey)
-        {
-            var tomato = new Tomato(ApiKey);
-            return tomato.FindMovieById(this.SelectedValue.RottenTomatoesId);
-        }
+        public string SearchQuery { get; set; }
 
         /// <summary>
         /// Total Number Of Results
@@ -42,28 +20,12 @@ namespace CherryTomato.Entities
         public int ResultCount { get; set; }
 
         /// <summary>
-        /// List Of Movie Results
-        /// </summary>
-        private List<Movie> Movies { get; set; }
-
-        /// <summary>
-        /// Default Constructor
-        /// </summary>
-        public MovieSearchResults()
-        {
-            ResultCount = 0;
-            Movies = new List<Movie>();
-            selectedIndex = 0;
-            Links = new MovieSearchLinkCollection();
-        }
-
-        /// <summary>
         /// Gets or sets the index of the currently selected index
         /// </summary>
         private int selectedIndex;
-        public int SelectedIndex 
+        public int SelectedIndex
         {
-            get { return selectedIndex; } 
+            get { return selectedIndex; }
             set
             {
                 if (selectedIndex != value)
@@ -77,13 +39,88 @@ namespace CherryTomato.Entities
         /// <summary>
         /// Gets the currently selected item
         /// </summary>
-        public Movie SelectedValue 
+        public Movie SelectedValue
         {
-            get { return Movies.ElementAt(SelectedIndex); } 
+            get { return Movies.ElementAt(SelectedIndex); }
         }
 
+        /// <summary>
+        /// Get the next page of results
+        /// </summary>
+        public string NextPage
+        {
+            get
+            {
+                string url = this.Links.Next;
 
-        public MovieSearchLinkCollection Links { get; set; }
+                if (string.IsNullOrEmpty(url))
+                    return this.CurrentPage;
+
+                return url;
+            }
+        }
+
+        /// <summary>
+        /// Get the previous page of results, returns the current page when their are no previous pages
+        /// </summary>
+        public string PreviousPage
+        {
+            get
+            {
+                string url = this.Links.Next;
+
+                if (string.IsNullOrEmpty(url))
+                    return this.CurrentPage;
+
+                return url;
+            }
+        }
+
+        /// <summary>
+        /// Get the previous page of results, returns the current page when their are no previous pages
+        /// </summary>
+        public string CurrentPage
+        {
+            get
+            {
+                return this.Links.Self;
+            }
+        }
+        #endregion
+
+        #region Constructors
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
+        public MovieSearchResults(string apikey=null)
+        {
+            ResultCount = 0;
+            Movies = new List<Movie>();
+            selectedIndex = 0;
+            Links = new MovieSearchLinkCollection();
+        } 
+        #endregion
+
+        #region Events
+        public event SelectedIndexChangedEventHandler SelectedIndexChanged;
+        public virtual void OnSelectedIndexChanged(EventArgs e)
+        {
+            if (SelectedIndexChanged != null)
+                SelectedIndexChanged(this, e);
+        } 
+        #endregion
+
+        #region Collections
+        /// <summary>
+        /// List Of Movie Results
+        /// </summary>
+        private List<Movie> Movies { get; set; }
+
+        /// <summary>
+        /// Collection of Link objects
+        /// </summary>
+        public MovieSearchLinkCollection Links { get; set; } 
+        #endregion
 
         #region LIST METHODS
         /// <summary>

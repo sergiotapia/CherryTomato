@@ -43,8 +43,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\CastMember.cs" />
+    <Compile Include="Entities\Link.cs" />
     <Compile Include="Entities\Movie.cs" />
     <Compile Include="Entities\MovieSearchResults.cs" />
+    <Compile Include="Entities\Poster.cs" />
+    <Compile Include="Entities\Rating.cs" />
+    <Compile Include="Entities\ReleaseDate.cs" />
+    <Compile Include="Entities\API_URLS.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tomato.cs" />
@@ -52,6 +58,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

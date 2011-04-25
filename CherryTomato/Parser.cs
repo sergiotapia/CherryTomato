@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CherryTomato.Entities;
 using Newtonsoft.Json.Linq;
+using System.Net;
 
 namespace CherryTomato
 {
@@ -35,10 +36,9 @@ namespace CherryTomato
             return movie;
         }
 
-
-        public static IEnumerable<CastMember> ParseFullMovieCast(string json)
+        public static IEnumerable<CastMember> ParseFullMovieCast(string url)
         {
-            JObject jObject = JObject.Parse(json);
+            JObject jObject = JObject.Parse(GetJsonResponse(url));
             List<CastMember> Cast = ParseCastMembers(jObject["cast"]);
             return Cast;
         }
@@ -46,11 +46,11 @@ namespace CherryTomato
         /// <summary>
         /// Parse Search Results For Movies
         /// </summary>
-        /// <param name="json">JSON string to parse</param>
+        /// <param name="url">url string to parse</param>
         /// <returns>MovieSearchResult object containing a list of Movie objects</returns>
-        public static MovieSearchResults ParseMovieSearchResults(string json)
+        public static MovieSearchResults ParseMovieSearchResults(string url)
         {
-            JObject jObject = JObject.Parse(json);
+            JObject jObject = JObject.Parse(GetJsonResponse(url));
 
             var result = new MovieSearchResults();
 
@@ -246,5 +246,18 @@ namespace CherryTomato
         }
         #endregion
 
+
+        /// <summary>
+        /// Fetches the JSON string from the URL.
+        /// </summary>
+        /// <param name="url">URL to download the JSON from.</param>
+        /// <returns>JSON formatted string</returns>
+        public static string GetJsonResponse(string url)
+        {
+            using (var client = new WebClient())
+            {
+                return client.DownloadString(url);
+            }
+        }
     }
 }
