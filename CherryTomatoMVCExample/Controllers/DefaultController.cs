@@ -65,5 +65,29 @@ namespace CherryTomatoMVCExample.Controllers
                return Redirect("Index");
             }
         }
+
+
+        public ActionResult BoxOffice()
+        {
+            if (tomato == null) tomato = new Tomato(ApiKey);
+            var movies = tomato.FindBoxOfficeList();
+            return View("BoxOffice", movies);
+        }
+
+
+        public ActionResult UpcomingReleases()
+        {
+            if (tomato == null) tomato = new Tomato(ApiKey);
+            var movies = tomato.FindUpcomingMoviesList();
+            return View("UpcomingReleases", movies);
+        }
+
+
+        public ActionResult InTheaters()
+        {
+            if (tomato == null) tomato = new Tomato(ApiKey);
+            var movies = tomato.FindMoviesInTheaterList();
+            return View("InTheaters", movies);
+        }
     }
 }

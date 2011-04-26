@@ -127,6 +127,22 @@ namespace CherryTomato
             return GetMovieSearchResults(url);
         }
 
+
+        /// <summary>
+        /// Gets a list of upcoming movies.
+        /// </summary>
+        /// <returns>MovieSearchResults</returns>
+        public MovieSearchResults FindUpcomingMoviesList()
+        {
+            var url = string.Format(API_URLS.LIST_UPCOMING, ApiKey);
+            return GetMovieSearchResults(url);
+        }
+
+        /// <summary>
+        /// Get the parsed MovieSearchResults object with formatted links
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         private MovieSearchResults GetMovieSearchResults(string url)
         {
             SearchResults = Parser.ParseMovieSearchResults(url);
@@ -138,18 +154,6 @@ namespace CherryTomato
 
             return SearchResults;
         }
-
-        /// <summary>
-        /// Gets a list of upcoming movies.
-        /// </summary>
-        /// <returns>MovieSearchResults</returns>
-        public MovieSearchResults FindUpcomingMoviesList()
-        {
-            var url = string.Format(API_URLS.LIST_UPCOMING, ApiKey);
-            var jsonResponse = Parser.GetJsonResponse(url);
-            return GetMovieSearchResults(jsonResponse);
-        }
-
 
         public IEnumerable<CastMember> GetFullCastByMovieID(int movieID)
         {

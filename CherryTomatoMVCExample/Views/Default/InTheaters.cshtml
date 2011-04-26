@@ -1,0 +1,24 @@
+﻿@model CherryTomato.Entities.MovieSearchResults
+
+@{
+    ViewBag.Title = "InTheaters";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var grid = new WebGrid(@Model, rowsPerPage: 5, canPage: true, canSort: true);
+}
+
+<h2>InTheaters</h2>
+
+<div id="Upcoming">
+@grid.GetHtml(
+tableStyle: "MovieSearchTable",
+rowStyle: "MovieSearchRow",
+alternatingRowStyle: "MovieSearchAlt",
+columns: grid.Columns(
+            grid.Column("Title", "Movie", @<text><h4 style="color: red;margin: 0">@item.Title</h4><img src="@item.Posters.ThumbnailPoster" alt="@item.Title" /></text>),
+            grid.Column("Year", "Year"),
+            grid.Column("MpaaRating", "MPAA Rating"),
+            grid.Column("Runtime", "Runtime"),
+            grid.Column("Synopsis", "Synopsis")
+        )
+)
+</div>

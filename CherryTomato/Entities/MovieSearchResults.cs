@@ -67,7 +67,7 @@ namespace CherryTomato.Entities
         {
             get
             {
-                string url = this.Links.Next;
+                string url = this.Links.Previous;
 
                 if (string.IsNullOrEmpty(url))
                     return this.CurrentPage;
