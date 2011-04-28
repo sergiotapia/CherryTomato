@@ -11,7 +11,7 @@ namespace CherryTomatoMVCExample.Controllers
 {
     public class DefaultController : Controller
     {
-        private string ApiKey = ConfigurationManager.AppSettings["ApiKey"];
+        public string ApiKey = ConfigurationManager.AppSettings["ApiKey"];
 
         // GET: The MovieSearchResult object
         public Tomato tomato
@@ -28,6 +28,19 @@ namespace CherryTomatoMVCExample.Controllers
             }
         }
 
+        public MovieSearchResults Results
+        {
+            get
+            {
+                object temp = Session["Results"];
+                return (temp == null) ? null : (MovieSearchResults)temp;
+            }
+            set
+            {
+                Session["Results"] = value;
+            }
+        }
+
         // GET: /Index
         public ActionResult Index()
         {
@@ -35,21 +48,9 @@ namespace CherryTomatoMVCExample.Controllers
         }
         
         // GET: /MovieSearch
-        public ActionResult MovieSearch(string title, string p)
+        public ActionResult MovieSearch(string q)
         {
-            int limit = 5;
-
-            switch (p)
-            {
-                case "next":
-                    return View("MovieSearch", tomato.NextPage);
-                case "prev":
-                    return View("MovieSearch", tomato.PreviousPage);
-                default:
-                    tomato = new Tomato(ApiKey);
-                    return (string.IsNullOrEmpty(title) ?
-                        View("MovieSearch") : View("MovieSearch", tomato.FindMoviesByQuery(title, limit)));
-            }
+            return View("MovieSearch");
         }
 
 

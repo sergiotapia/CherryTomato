@@ -208,5 +208,14 @@ namespace CherryTomato.Entities
         }
 
         #endregion
+
+        internal void AddRange(MovieSearchResults movieSearchResults)
+        {
+            foreach (var item in movieSearchResults.Movies)
+            {
+                if (Movies.All(i=>i.RottenTomatoesId != item.RottenTomatoesId))
+                    Movies.Add(item);
+            }        
+        }
     }
 }

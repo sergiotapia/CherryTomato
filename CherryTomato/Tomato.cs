@@ -10,6 +10,8 @@ namespace CherryTomato
     {
         public string ApiKey { get; set; }
 
+        public string SearchQuery { get; set; }
+
         private MovieSearchResults SearchResults { get; set; }
 
         private Movie MovieInfo { get; set; }
@@ -18,8 +20,7 @@ namespace CherryTomato
         {
             get
             {
-                SearchResults = GetMovieSearchResults(SearchResults.NextPage);
-                return SearchResults;
+                return GetMovieSearchResults(SearchResults.NextPage);
             }
         }
 
@@ -27,8 +28,7 @@ namespace CherryTomato
         {
             get
             {
-                SearchResults = GetMovieSearchResults(SearchResults.PreviousPage);
-                return SearchResults;
+                return GetMovieSearchResults(SearchResults.PreviousPage);
             }
         }
 
@@ -76,10 +76,22 @@ namespace CherryTomato
         /// <param name="query">Search term</param>
         /// <param name="pageLimit">Amount of result pages to load</param>
         /// <returns>MovieSearchResults object</returns>
-        public MovieSearchResults FindMoviesByQuery(string query, int pageLimit = 10, int page=0)
+        public MovieSearchResults FindMoviesByQuery(string query)
         {
-            var url = String.Format(API_URLS.MOVIE_SEARCH, ApiKey, query, pageLimit, page);
-            return GetMovieSearchResults(url);
+            var url = String.Format(API_URLS.MOVIE_SEARCH, ApiKey, query, 50, 0);
+            GetAllSearchResults(url);
+            return SearchResults;
+        }
+
+        private void GetAllSearchResults(string url)
+        {
+            SearchResults = FindMoviesByUrl(url);
+
+            for (int i = SearchResults.Count; i < SearchResults.ResultCount; )
+            {
+                FindMoviesByUrl(SearchResults.Links.Next);
+                i = SearchResults.Count;
+            }
         }
 
         /// <summary>
@@ -141,15 +153,19 @@ namespace CherryTomato
         /// <summary>
         /// Get the parsed MovieSearchResults object with formatted links
         /// </summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
+        /// <param name="url">url to get movie data from</param>
+        /// <returns>MovieSearchResults</returns>
         private MovieSearchResults GetMovieSearchResults(string url)
         {
-            SearchResults = Parser.ParseMovieSearchResults(url);
+            if (SearchResults.Count == 0) 
+                SearchResults = Parser.ParseMovieSearchResults(url);
+            else
+                SearchResults.AddRange(Parser.ParseMovieSearchResults(url));
 
             foreach (var link in SearchResults.Links)
             {
-                link.Url = link.Url + "&apikey=" + ApiKey;
+                if (!link.Url.Contains("&apikey="))
+                    link.Url = link.Url + "&apikey=" + ApiKey;
             }
 
             return SearchResults;

@@ -1,35 +1,26 @@
-﻿@model CherryTomato.Entities.MovieSearchResults
-
-@{
+﻿@{
     ViewBag.Title = "Movie Search";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var grid = new WebGrid(@Model, ajaxUpdateContainerId: "Results");
+    string title = string.Empty;
+    CherryTomato.Entities.MovieSearchResults movie = null;
+    
+    if (Request["q"] != null)
+    {
+        title = Request["q"];
+        var tomato = new CherryTomato.Tomato(System.Configuration.ConfigurationManager.AppSettings["ApiKey"]);
+        movie = tomato.FindMoviesByQuery(title);
+    }
+    
+    var grid = new WebGrid(movie, canPage: false);
 }
 <div id="Results">
 <form action="" method="post">
-<input type="text" name="title" value="" />
+<input type="text" name="q" value="" />
 <input type="submit" name="btnSubmit" value="Search" />
 </form>   
 
-@if (@Model != null)
-{
- <h6>Page: @Request["page"]</h6>
-    <div style="margin: .5em; width: 20em;">
- @Html.ActionLink("previous", "MovieSearch", new { p = "prev", title = @Model.SearchQuery, total = @Model.ResultCount }, new { style = "margin: 1em;" })
- @Html.ActionLink("next", "MovieSearch", new { p = "next", title = @Model.SearchQuery, total = @Model.ResultCount }, new { style = "margin: 1em;" })
-    </div>
-    
-        @grid.GetHtml(
-            tableStyle: "MovieSearchTable",
-            rowStyle: "MovieSearchRow",
-            alternatingRowStyle: "MovieSearchAlt",        
-            columns:grid.Columns(
-                grid.Column("title", "Title", format: @<text><a href='@Href("~/Default/MovieInfo?id=" + @item.RottenTomatoesId + "&title=" +  @Request["title"])' style="vertical-align: top; display: block; width: 10em;">@item.Title</a></text>),
-                        grid.Column("runtime", "Run Time"),
-                        grid.Column("year", "Year"),
-                        grid.Column("posters", "Poster", @<text><img src='@item.Posters.ThumbnailPoster' width="61" height="91" alt="Alternate Text" /></text>)
-                )
-            )
-                                 
+@if (movie != null)
+{   
+    @grid.GetHtml()                                
 }
 </div>
