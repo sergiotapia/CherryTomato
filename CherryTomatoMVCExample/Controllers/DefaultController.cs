@@ -50,7 +50,16 @@ namespace CherryTomatoMVCExample.Controllers
         // GET: /MovieSearch
         public ActionResult MovieSearch(string q)
         {
-            return View("MovieSearch");
+            if (tomato == null)
+                tomato = new CherryTomato.Tomato(System.Configuration.ConfigurationManager.AppSettings["ApiKey"]);
+
+            if ((Results == null && !string.IsNullOrEmpty(q)) || 
+                (!string.IsNullOrEmpty(q) && Results.SearchQuery != q))
+            {
+                Results = tomato.FindMoviesByQuery(q);
+            }
+
+            return View("MovieSearch", Results);
         }
 
 

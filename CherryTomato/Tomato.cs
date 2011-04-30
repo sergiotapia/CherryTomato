@@ -87,10 +87,10 @@ namespace CherryTomato
         {
             SearchResults = FindMoviesByUrl(url);
 
-            for (int i = SearchResults.Count; i < SearchResults.ResultCount; )
+            for (; SearchResults.Count < SearchResults.ResultCount; )
             {
                 FindMoviesByUrl(SearchResults.Links.Next);
-                i = SearchResults.Count;
+                if (SearchResults.Count >= 500) break;
             }
         }
 
@@ -157,10 +157,13 @@ namespace CherryTomato
         /// <returns>MovieSearchResults</returns>
         private MovieSearchResults GetMovieSearchResults(string url)
         {
-            if (SearchResults.Count == 0) 
-                SearchResults = Parser.ParseMovieSearchResults(url);
+            var results = Parser.ParseMovieSearchResults(url);
+
+            if (string.IsNullOrEmpty(results.Links.Previous) ||
+                results.Links.Previous == results.Links.Self)
+                SearchResults = results;
             else
-                SearchResults.AddRange(Parser.ParseMovieSearchResults(url));
+                SearchResults.AddRange(results);
 
             foreach (var link in SearchResults.Links)
             {

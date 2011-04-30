@@ -92,7 +92,7 @@ namespace CherryTomato.Entities
         /// <summary>
         /// Default Constructor
         /// </summary>
-        public MovieSearchResults(string apikey=null)
+        public MovieSearchResults()
         {
             ResultCount = 0;
             Movies = new List<Movie>();
@@ -215,7 +215,8 @@ namespace CherryTomato.Entities
             {
                 if (Movies.All(i=>i.RottenTomatoesId != item.RottenTomatoesId))
                     Movies.Add(item);
-            }        
+            }
+            this.Links = movieSearchResults.Links;
         }
     }
 }

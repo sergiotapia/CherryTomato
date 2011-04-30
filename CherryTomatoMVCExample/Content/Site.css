@@ -151,15 +151,29 @@ textarea
 	height: 100px;
 }
 
-.MovieSearchTable td
+.MovieSearchTable
 {
-	border: 1px solid gray;
+	margin: .5em auto;
+}
+
+.MovieSearchTable tr
+{
 	margin: 0;
+	padding: 0;	
+}
+
+.MovieSearchTable tr td
+{
+	margin: 0;
+	vertical-align: text-top;
+	text-align: center;
+	width: 10em;
 	padding: .3em;
+	border-bottom: 2px solid gray;
 }
 
 .MovieSearchRow
-{
+{	
 	padding: 0;
 	margin: 0;
 }
