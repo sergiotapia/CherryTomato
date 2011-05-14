@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CherryTomatoMVCExample", "C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CherryTomato.WebHelpers", "CherryTomatoWebHelpers\CherryTomato.WebHelpers.csproj", "{A6096436-7545-498E-81A4-4DB43FCFB193}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RTomatoes.Net", "RTomatoes.Net\RTomatoes.Net.csproj", "{69EFC60D-E6AC-4705-9FEC-B693BCBABAEE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,16 @@ Global
 		{A6096436-7545-498E-81A4-4DB43FCFB193}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{A6096436-7545-498E-81A4-4DB43FCFB193}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{A6096436-7545-498E-81A4-4DB43FCFB193}.Release|x86.ActiveCfg = Release|Any CPU
+		{69EFC60D-E6AC-4705-9FEC-B693BCBABAEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69EFC60D-E6AC-4705-9FEC-B693BCBABAEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69EFC60D-E6AC-4705-9FEC-B693BCBABAEE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{69EFC60D-E6AC-4705-9FEC-B693BCBABAEE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{69EFC60D-E6AC-4705-9FEC-B693BCBABAEE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{69EFC60D-E6AC-4705-9FEC-B693BCBABAEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69EFC60D-E6AC-4705-9FEC-B693BCBABAEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69EFC60D-E6AC-4705-9FEC-B693BCBABAEE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{69EFC60D-E6AC-4705-9FEC-B693BCBABAEE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{69EFC60D-E6AC-4705-9FEC-B693BCBABAEE}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

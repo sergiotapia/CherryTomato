@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using CherryTomato;
 using System.Configuration;
 using CherryTomato.Entities;
+using RTomatoes.Net;
+using RTomatoes.Net.Entities;
 
 namespace CherryTomatoMVCExample.Controllers
 {
@@ -14,12 +16,12 @@ namespace CherryTomatoMVCExample.Controllers
         public string ApiKey = ConfigurationManager.AppSettings["ApiKey"];
 
         // GET: The MovieSearchResult object
-        public Tomato tomato
+        public RTomato tomato
         {
             get
             {
                 object temp = Session["Tomato"];
-                return temp == null ? null : (Tomato)temp;
+                return temp == null ? null : (RTomato)temp;
             }
 
             set
@@ -28,12 +30,12 @@ namespace CherryTomatoMVCExample.Controllers
             }
         }
 
-        public MovieSearchResults Results
+        public MoviesSearch Results
         {
             get
             {
                 object temp = Session["Results"];
-                return (temp == null) ? null : (MovieSearchResults)temp;
+                return (temp == null) ? null : (MoviesSearch)temp;
             }
             set
             {
@@ -50,16 +52,7 @@ namespace CherryTomatoMVCExample.Controllers
         // GET: /MovieSearch
         public ActionResult MovieSearch(string q)
         {
-            if (tomato == null)
-                tomato = new CherryTomato.Tomato(System.Configuration.ConfigurationManager.AppSettings["ApiKey"]);
-
-            if ((Results == null && !string.IsNullOrEmpty(q)) || 
-                (!string.IsNullOrEmpty(q) && Results.SearchQuery != q))
-            {
-                Results = tomato.FindMoviesByQuery(q);
-            }
-
-            return View("MovieSearch", Results);
+            return View("MovieSearch");
         }
 
 
@@ -67,7 +60,7 @@ namespace CherryTomatoMVCExample.Controllers
         {
             if (id.HasValue)
             {
-                var movie = tomato.FindMovieById(id.Value);
+                var movie = tomato.MovieInfo(id.Value);
                 return View("MovieInfo", movie);
             }
             else
@@ -79,25 +72,25 @@ namespace CherryTomatoMVCExample.Controllers
 
         public ActionResult BoxOffice()
         {
-            if (tomato == null) tomato = new Tomato(ApiKey);
-            var movies = tomato.FindBoxOfficeList();
-            return View("BoxOffice", movies);
+            //if (tomato == null) tomato = new Tomato(ApiKey);
+            //var movies = tomato.FindBoxOfficeList();
+            return View("BoxOffice");
         }
 
 
         public ActionResult UpcomingReleases()
         {
-            if (tomato == null) tomato = new Tomato(ApiKey);
-            var movies = tomato.FindUpcomingMoviesList();
-            return View("UpcomingReleases", movies);
+            //if (tomato == null) tomato = new Tomato(ApiKey);
+            //var movies = tomato.FindUpcomingMoviesList();
+            return View("UpcomingReleases");
         }
 
 
         public ActionResult InTheaters()
         {
-            if (tomato == null) tomato = new Tomato(ApiKey);
-            var movies = tomato.FindMoviesInTheaterList();
-            return View("InTheaters", movies);
+            //if (tomato == null) tomato = new Tomato(ApiKey);
+            //var movies = tomato.FindMoviesInTheaterList();
+            return View("InTheaters");
         }
     }
 }

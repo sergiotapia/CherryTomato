@@ -116,9 +116,17 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CherryTomatoWebHelpers\CherryTomato.WebHelpers.csproj">
+      <Project>{A6096436-7545-498E-81A4-4DB43FCFB193}</Project>
+      <Name>CherryTomato.WebHelpers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CherryTomato\CherryTomato.csproj">
       <Project>{FFF019A4-DB0B-452A-83AE-C967A546A278}</Project>
       <Name>CherryTomato</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RTomatoes.Net\RTomatoes.Net.csproj">
+      <Project>{69EFC60D-E6AC-4705-9FEC-B693BCBABAEE}</Project>
+      <Name>RTomatoes.Net</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

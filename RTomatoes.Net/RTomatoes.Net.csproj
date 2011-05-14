@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{A6096436-7545-498E-81A4-4DB43FCFB193}</ProjectGuid>
+    <ProjectGuid>{69EFC60D-E6AC-4705-9FEC-B693BCBABAEE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CherryTomato.WebHelpers</RootNamespace>
-    <AssemblyName>CherryTomato.WebHelpers</AssemblyName>
+    <RootNamespace>RTomatoes.Net</RootNamespace>
+    <AssemblyName>RTomatoes.Net</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -33,10 +33,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Helpers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,24 +43,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TomatoHelper.cs" />
+    <Compile Include="Entities\Cast.cs" />
+    <Compile Include="Entities\Directors.cs" />
+    <Compile Include="Entities\Link.cs" />
+    <Compile Include="Entities\Movie.cs" />
+    <Compile Include="Entities\MoviesSearch.cs" />
+    <Compile Include="Entities\Poster.cs" />
+    <Compile Include="Entities\Rating.cs" />
+    <Compile Include="Entities\ReleaseDate.cs" />
+    <Compile Include="JsonParser\API_URLS.cs" />
+    <Compile Include="JsonParser\RTomato.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CherryTomato\CherryTomato.csproj">
-      <Project>{FFF019A4-DB0B-452A-83AE-C967A546A278}</Project>
-      <Name>CherryTomato</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RTomatoes.Net\RTomatoes.Net.csproj">
-      <Project>{69EFC60D-E6AC-4705-9FEC-B693BCBABAEE}</Project>
-      <Name>RTomatoes.Net</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="images\RottenTomatoBG.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

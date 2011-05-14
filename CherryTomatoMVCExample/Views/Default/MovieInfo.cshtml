@@ -1,4 +1,4 @@
-﻿@model CherryTomato.Entities.Movie
+﻿@model RTomatoes.Net.Entities.Movie
 
 @{
     ViewBag.Title = "MovieInfo";
@@ -6,32 +6,34 @@
 }
 
 <div class="fieldset">
-    <h2 style="color: #FF634D; margin: 0 auto .7em auto; width: 100%;">@Model.Title</h2>
+    <h2 style="color: #FF634D; margin: 0 auto .7em auto; width: 100%;">@Model.title</h2>
     
     <div class="fieldset_container">
         <div class="MovieInfoContainer">
             <div class="display-label">Year:</div>
-            <div class="display-field">@Model.Year</div>
+            <div class="display-field">@Model.year</div>
 
             <div class="display-label">MpaaRating:</div>
-            <div class="display-field">@Model.MpaaRating</div>
+            <div class="display-field">@Model.mpaa_rating</div>
 
             <div class="display-label">Runtime:</div>
-            <div class="display-field">@Model.Runtime</div>
+            <div class="display-field">@Model.runtime Minutes</div>
 
-            @foreach (var item in @Model.Genres)
-            {
-                <div style="float: left; width: 100%;">
-                    <span class="display-label">Genre:</span>
-                    <span class="display-field">@item</span>
-                </div>
-            }
+            <div style="float: left; width: 100%;">
+                <span class="display-label">Genre:</span>
+                <ul class="display-field" style="list-style: none;">
+                @foreach (var item in @Model.genres)
+                {
+                    <li>@item</li>
+                }
+                </ul>
+            </div>            
 
             <div class="display-label">Synopsis:</div>
-            <div class="display-field">@Model.Synopsis</div>
+            <div class="display-field">@Model.synopsis</div>
         </div>
         <div class="MovieInfoImgContainer">
-            <img src="@Model.Posters.ProfilePoster" alt="@Model.Title" class="MovieInfoImg" />
+            <img src="@Model.posters.profile" alt="@Model.title" class="MovieInfoImg" />
         </div>
     </div>
 </div>

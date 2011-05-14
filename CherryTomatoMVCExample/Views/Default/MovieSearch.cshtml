@@ -1,11 +1,8 @@
-﻿@model CherryTomato.Entities.MovieSearchResults
-
-@{
+﻿@{
     ViewBag.Title = "Movie Search";
     Layout = "~/Views/Shared/_Layout.cshtml";
     string title = string.Empty;
-    
-    var grid = new WebGrid(@Model, canPage: true);
+    TomatoHelper.Initialize(System.Configuration.ConfigurationManager.AppSettings["ApiKey"]);
 }
 <div id="Results">
 <form action="" method="post">
@@ -13,39 +10,6 @@
 <input type="submit" name="btnSubmit" value="Search" />
 </form>   
 
-@if (@Model != null && @Model.Count > 0)
-{   
-    @grid.GetHtml(
-        tableStyle: "MovieSearchTable",
-        rowStyle: "MovieSearchRow",
-        alternatingRowStyle: "MovieSearchAlt",
-        columns: grid.Columns(
-            grid.Column("Title", "Movie", 
-                @<text><h4 style="color: red;margin: .2em; width: 15em;">
-                @item.Title</h4><a href="~/../MovieInfo/@item.RottenTomatoesId">
-                <img src="@item.Posters.ThumbnailPoster" alt="@item.Title" width="61" height="91" />
-                </a></text>),
-            grid.Column("Cast", "Cast", format: (item) => 
-            { 
-                string temp = "<div style='text-align: left;color: red;height:120px; width: 175px; padding-right: 1em; overflow: auto; overflow-x:hidden;'>";
-                var sub = new WebGrid(item.Cast);
-                temp += sub.GetHtml(
-                    columns:sub.Columns(
-                        sub.Column("Name", "Name"),
-                        sub.Column("Characters", "Characters", format:(subitem)=>
-                            {
-                                string temp2 = string.Empty;
-                                foreach (var member in subitem.Characters)
-                                {
-                                    temp2 += member + "<br />";
-                                }
-                                return new HtmlString(temp2);
-                            })
-                    ));
-                temp += "</div>";
-                return new HtmlString(temp);
-            })
-        )
-    )                                
-}
+@TomatoHelper.TitleSearch()
+
 </div>
