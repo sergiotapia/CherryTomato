@@ -38,20 +38,19 @@ public static class TomatoHelper
                 
                 return new HelperResult(w =>
                     {                        
-                        var grid = new WebGrid(movies, rowsPerPage: 5, canPage: false);
+                        var grid = new WebGrid(movies, canPage: false, canSort: false);
                         w.WriteLine("<form action='' method='post'>");
                         w.WriteLine("<div style='width: 242px;height:312px;background: url(\"" + url + "\") no-repeat'>");
-                        w.WriteLine("<input width='100' type='text' name='q' style='border: transparent; position: relative; top: 16%; left: 13%;' />");
-                        w.WriteLine("<input type='submit' name='btnSubmit' text='' style='width:25px; height: 25px; position: relative; top: 16%; left: 83%;");
-                        w.WriteLine("<div style='border-top: solid gray 1px; overflow: auto; height: 65%;position: relative; top: 20%; width: 220px; margin: 0 auto;'>");
+                        w.WriteLine("<input width='100' type='text' name='q' style='position: relative; top: 26px; left: 13%;' />");
+                        w.WriteLine("<input type='submit' value='' style='background-color: transparent;width:25px; height: 26px; position: relative; top: 26px; left: 35px;' />"); 
+                        w.WriteLine("<div style='border: solid gray 1px; overflow: auto; height: 65%;position: relative; top: 40px; width: 220px; margin: 0 15px 0 auto;'>");
                         
                         w.WriteLine( HttpUtility.HtmlDecode(
                             grid.GetHtml(
                                 tableStyle: "MovieSearchTable",
-                                rowStyle: "MovieSearchRow",
-                                alternatingRowStyle: "MovieSearchAlt",
+                                rowStyle: "MovieSearchRow",                         
                                 columns: grid.Columns(
-                                    grid.Column("Title", "Movie",
+                                    grid.Column("Title", "",
                                     format: (item) =>
                                         {
                                             return "<h4 style=\"color: red;margin: 0em; width: 15em;\">" +
@@ -74,8 +73,8 @@ public static class TomatoHelper
             {
                 w.WriteLine("<form action='' method='post'>");
                 w.WriteLine("<div style='width: 242px;height:312px;background: url(\"" + url + "\") no-repeat'>");
-                w.WriteLine("<input width='100' type='text' name='q' style='border: transparent;position: relative; top: 15%; left: 13%;' />");
-                w.WriteLine("<input type='submit' value='' style='background-color: transparent;width:25px; height: 26px; position: relative; top: 14%; left: 16%;"); 
+                w.WriteLine("<input width='100' type='text' name='q' style='position: relative; top: 26px; left: 13%;' />");
+                w.WriteLine("<input type='submit' value='' style='background-color: transparent;width:25px; height: 26px; position: relative; top: 26px; left: 35px;' />"); 
                 w.WriteLine("<div style='border-top: solid gray 1px; overflow: auto; height: 65%;position: relative; top: 20%; width: 220px; margin: .1em auto;'>");
                 w.WriteLine("No Data Found");
                 w.WriteLine("</div>");

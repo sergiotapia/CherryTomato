@@ -45,10 +45,16 @@ namespace RTomatoes.Net
             string url = string.Format(API_URLS.MOVIE_SEARCH, API_KEY, title, 50, index++);
             var results = JsonToObject<MoviesSearch>(url);
 
-            while (results.movies.Count < results.total)
+            while (true)
             {
                 url = string.Format(API_URLS.MOVIE_SEARCH, API_KEY, title, 50, index++);                
                 results.movies.AddRange(JsonToObject<MoviesSearch>(url).movies);
+
+                if (results.movies.Count >= 100
+                    || results.movies.Count >= results.total)
+                {
+                    break;
+                }
             }
 
             return results;
