@@ -97,7 +97,7 @@ namespace CherryTomato
 
             foreach (var rating in jsonArray)
             {
-                Rating newRating = new Rating() { Type = (string)rating.Key, Score = (int)rating.Value };
+                Rating newRating = new Rating() { Type = (string)rating.Key, Score = rating.Value.ToString() };
                 ratings.Add(newRating);
             }
 
