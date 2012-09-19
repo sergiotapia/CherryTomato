@@ -78,6 +78,6 @@ namespace CherryTomato.Entities
     public class Rating
     {
         public string Type { get; set; }
-        public int Score { get; set; }
+        public string Score { get; set; }
     }
 }
