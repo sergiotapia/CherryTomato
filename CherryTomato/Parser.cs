@@ -37,6 +37,14 @@ namespace CherryTomato
             return movie;
         }
 
+
+        public static IEnumerable<CastMember> ParseFullMovieCast(string json)
+        {
+            JObject jObject = JObject.Parse(json);
+            List<CastMember> Cast = ParseCastMembers(jObject["cast"]);
+            return Cast;
+        }
+
         /// <summary>
         /// Parse Search Results For Movies
         /// </summary>
@@ -198,6 +206,7 @@ namespace CherryTomato
         private static int? ParseRunTime(JToken jToken)
         {
             return jToken.Value<string>() == String.Empty ? -1 : jToken.Value<int>();
+            return jToken.Value<int?>();
         }
 
         private static string ParseMpaaRating(JToken jToken)
